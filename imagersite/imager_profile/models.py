@@ -19,10 +19,14 @@ class ImagerProfile(models.Model):
     money_owed = models.DecimalField(
         max_digits=8, decimal_places=2
     )
-    employed = models.BooleanField(default=True)
+    hireable = models.BooleanField(default=True)
     address = models.CharField(max_length=255, blank=True, null=True)
-    camera_type = models.CharField(max_length=255 blank=True, null=True)
+    camera_type = models.CharField(max_length=255, blank=True, null=True)
     personal_website = models.URLField(max_length=200)
+    bio = models.TextField()
+    travel_radius = models.DecimalField(max_digits=8, decimal_places=2)
+    phone = models.CharField(max_length=50, blank=True, null=True)
+    photo_type = models.CharField(max_length=50, blank=True, null=True)
 
 
 @receiver(post_save, sender=User)
