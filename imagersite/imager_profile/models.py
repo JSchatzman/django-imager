@@ -16,9 +16,6 @@ class ImagerProfile(models.Model):
         related_name="profile",
         on_delete=models.CASCADE
     )
-    money_owed = models.DecimalField(
-        max_digits=8, decimal_places=2
-    )
     hireable = models.BooleanField(default=True)
     address = models.CharField(max_length=255, blank=True, null=True)
     camera_type = models.CharField(max_length=255, blank=True, null=True)
@@ -27,10 +24,11 @@ class ImagerProfile(models.Model):
     travel_radius = models.DecimalField(max_digits=8, decimal_places=2)
     phone = models.CharField(max_length=50, blank=True, null=True)
     photo_type = models.CharField(max_length=50, blank=True, null=True)
+    is_active = models.BooleanField(default=True)
 
 
 @receiver(post_save, sender=User)
 def make_profile_for_user(sender, instance, **kwargs):
-    new_profile = PatronProfile(user=instance)
-    new_profile.money_owed = 0.0
-new_profile.save()
+    new_profile = ImagerProfile(user=instance)
+    new_profile.is_active = True
+    new_profile.save()
