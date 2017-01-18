@@ -8,6 +8,14 @@ from django.dispatch import receiver # <-- listen for a thing to be done
 # Create your models here.
 
 
+class ActiveUserManager(models.Manager):
+    """Query ImagerProfile of active user."""
+    def get_querysets(self):
+        """Return query set of profiles for active users."""
+        query = super(ActiveUserManager, self).get_querysets()
+        return query.filter(user__is_active__exact=True)
+
+
 class ImagerProfile(models.Model):
     """The ImagerProfile and all of its attributes."""
 
