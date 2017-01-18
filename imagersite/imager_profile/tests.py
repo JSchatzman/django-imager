@@ -6,15 +6,13 @@ import factory
 # Create your tests here.
 class ProfileTests(TestCase):
     """Run the tests."""
-
     class UserFactory(factory.django.DjangoModelFactory):
         """Generate test users."""
         class Meta:
             model = User
-
         username = factory.Sequence(lambda n: "The Chosen {}".format(n))
         email = factory.LazyAttribute(
-            lambda x: "{}@imager.com".format(x.username.replace(" ", "")))
+        lambda x: "{}@imager.com".format(x.username.replace(" ", "")))
 
     def setUp(self):
         """set up for tests."""
@@ -34,3 +32,10 @@ class ProfileTests(TestCase):
         user = self.users[0]
         self.assertTrue(hasattr(user, 'profile'))
         self.assertIsInstance(user.profile, ImagerProfile)
+
+    # def test_update_profile_attribute(self):
+    #     """Test that changing a attribute of a user works correctly."""
+    #     user = self.users[0]
+    #     user.profile.bio = 'bio'
+    #     query = User.objects.first()
+    #     self.assertTrue(query.profile.bio == 'bio')
