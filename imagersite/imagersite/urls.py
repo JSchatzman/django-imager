@@ -17,6 +17,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from imager_profile.views import home_view
 from django.contrib.auth import views
+# from django.contrib.auth.views import login, logout
 
 
 urlpatterns = [
@@ -24,6 +25,10 @@ urlpatterns = [
     url(r'^$', home_view, name='homepage'),
     url(r'^login/$', views.login, name='login'),
     url(r'^logout/$', views.logout, name='logout'),
+
+
+
+    url(r'^registration/', include("registration.backends.hmac.urls")),
     # url(r'^home/\w+$', home_view, name='homepage')
     # url(r'^accounts/', include('registration.backends.hmac.urls')),
 ]
