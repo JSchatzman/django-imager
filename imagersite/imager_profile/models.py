@@ -23,6 +23,7 @@ class ImagerProfile(models.Model):
         related_name="profile",
         on_delete=models.CASCADE
     )
+    objects = models.Manager()
     active = ActiveUsersManager()
     hireable = models.BooleanField(default=True)
     address = models.CharField(max_length=255, blank=True, null=True)
