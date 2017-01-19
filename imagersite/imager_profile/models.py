@@ -10,9 +10,9 @@ from django.dispatch import receiver
 
 class ActiveUsersManager(models.Manager):
     """Active user manager."""
-    def get_queryset(self):
+    def get_querysets(self):
         """Get the query set of active users."""
-        return super(ActiveUsersManager, self).get_queryset().filter(user__is_active=True)
+        return super(ActiveUsersManager, self).get_querysets().filter(user__is_active__=True)
 
 
 class ImagerProfile(models.Model):
