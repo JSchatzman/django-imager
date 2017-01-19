@@ -8,11 +8,11 @@ from django.dispatch import receiver
 # Create your models here.
 
 
-class ActiveUserManager(models.Manager):
-    """Query ImagerProfile of active user."""
-    def get_querysets(self):
-        """Return query set of profiles for active users."""
-        return super(ActiveUserManager, self).get_queryset().filter(user__is_active=True)
+class ActiveUsersManager(models.Manager):
+    """Active user manager."""
+    def get_queryset(self):
+        """Get the query set of active users."""
+        return super(ActiveUsersManager, self).get_queryset().filter(user__is_active=True)
 
 
 class ImagerProfile(models.Model):
@@ -23,19 +23,19 @@ class ImagerProfile(models.Model):
         related_name="profile",
         on_delete=models.CASCADE
     )
-    active = ActiveUserManager()
+    active = ActiveUsersManager()
     hireable = models.BooleanField(default=True)
     address = models.CharField(max_length=255, blank=True, null=True)
     camera_type = models.CharField(max_length=255, blank=True, null=True)
     personal_website = models.URLField(max_length=200)
     bio = models.TextField()
-    travel_radius = models.DecimalField(max_digits=8, null=True)
+    travel_radius = models.DecimalField(max_digits=8, decimal_places=3, null=True)
     phone = models.CharField(max_length=50, blank=True, null=True)
     photo_type = models.CharField(max_length=50, blank=True, null=True)
 
     def display_properties(self):
         """Print the properties of this profile."""
-        print(self.hierable)
+        print(self.hireable)
         print(self.address)
         print(self.camera_type)
         print(self.personal_website)
@@ -47,11 +47,12 @@ class ImagerProfile(models.Model):
     @property
     def is_active(self):
         """Return True if user is active."""
-        return self.user__is_active
+        return self.user.is_active
 
 
 @receiver(post_save, sender=User)
 def make_profile_for_user(sender, instance, **kwargs):
     new_profile = ImagerProfile(user=instance)
-    new_profile.is_active = True
-    new_profile.save()
+    if kwargs['created']:
+        profile = ImagerProfile(user=instance)
+        profile.save()
