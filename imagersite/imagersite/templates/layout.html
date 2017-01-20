@@ -25,10 +25,13 @@
                 </h1>
                 <h3>
                     <ul>
-                    <li><a href="{% url 'registration_register' %}">Register</a></li>
-                    <li><a href="{% url 'login' %}">Login</a></li>
-                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                    {% else %}
+                        <li><a href="{% url 'login' %}">Login</a></li>
+                        <li><a href="{% url 'registration_register' %}">Register</a></li>
                     </ul>
+                    {% endif %}
                 </h3>
                 {% block body %}{% endblock %}
             </div>

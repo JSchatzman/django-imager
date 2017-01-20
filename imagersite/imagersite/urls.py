@@ -17,7 +17,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from imager_profile.views import home_view
 from django.contrib.auth import views
-# from django.contrib.auth.views import login, logout
+from django.contrib.auth.views import login, logout
 
 
 urlpatterns = [
