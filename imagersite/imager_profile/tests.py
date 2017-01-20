@@ -1,25 +1,27 @@
-from django.test import TestCase
+from django.test import TestCase, Client, RequestFactory
 from django.contrib.auth.models import User
 from imager_profile.models import ImagerProfile
 import factory
 
 
-# Create your tests here.
+class UserFactory(factory.django.DjangoModelFactory):
+    """Generate test users."""
+
+    class Meta:
+        model = User
+    username = factory.Sequence(lambda n: "User {}".format(n))
+    email = factory.LazyAttribute(
+        lambda x: "{}@imager.com".format(x.username.replace(" ", "")))
+
+
+
 class ProfileTests(TestCase):
 
     """Run the tests."""
 
-    class UserFactory(factory.django.DjangoModelFactory):
-        """Generate test users."""
-        class Meta:
-            model = User
-        username = factory.Sequence(lambda n: "User {}".format(n))
-        email = factory.LazyAttribute(
-        lambda x: "{}@imager.com".format(x.username.replace(" ", "")))
-
     def setUp(self):
         """set up for tests."""
-        self.users = [self.UserFactory.create() for i in range(5)]
+        self.users = [UserFactory.create() for i in range(5)]
 
     def test_profile_made(self):
         """Test that a profile has been made."""
@@ -43,71 +45,93 @@ class ProfileTests(TestCase):
         user.profile.bio = 'bio'
         user.profile.save()
         query = User.objects.first()
-        #import pdb; pdb.set_trace()
         self.assertTrue(query.profile.bio == 'bio')
 
-    # def test_login_route_redirects(self):
-    #     """"""
-    #     new_user = UserFactory.create()
-    #     new_user.username = "potato_joe"
-    #     new_user.set_password("tugboats")
-    #     new_user.save()
-    #     response = self.client.get("/login/", {
-    #         "username": new_user.username,
-    #         "password": "tugboats"
-    #     })
-    #     self.assertTrue(response.status_code == 302)
 
-    # def test_login_route_redirects_to_homepage(self):
-    #     """"""
-    #     new_user = UserFactory.create()
-    #     new_user.username = "potato_joe"
-    #     new_user.set_password("tugboats")
-    #     new_user.save()
-    #     response = self.client.get("/login/", {
-    #         "username": new_user.username,
-    #         "password": "tugboats"
-    #     }, follow=True)
-    #     self.assertTrue(response.redirect_chain[0][0] == "/")
+class ProfileFrontEndTests(TestCase):
 
-    # def test_can_register_new_user(self):
-    #     """"""
-    #     self.assertTrue(User.objects.count() == 0)
-    #     response = self.client.post("/registration/register/", {
-    #         "username": "bobdobson",
-    #         "email": "bob@dob.son",
-    #         "password1": "tugboats",
-    #         "password2": "tugboats",
-    #     })
-    #     self.assertTrue(User.objects.count() == 1)
+    def setUp(self):
+        self.client = Client()
+        self.request = RequestFactory()
 
-    # def test_registered_user_is_inactive(self):
-    #     """"""
-    #     self.client.post("/registration/register/", {
-    #         "username": "bobdobson",
-    #         "email": "bob@dob.son",
-    #         "password1": "tugboats",
-    #         "password2": "tugboats",
-    #     })
-    #     the_user = User.objects.first()
-    #     self.assertFalse(the_user.is_active)
+    def test_home_view_is_status_ok(self):
+        """Test route to home view without client info or headers."""
+        from imager_profile.views import home_view
+        req = self.request.get("/potato")
+        response = home_view(req)
+        self.assertTrue(response.status_code == 200)
 
-    # def test_successful_registration_redirects(self):
-    #     """"""
-    #     response = self.client.post("/registration/register/", {
-    #         "username": "bobdobson",
-    #         "email": "bob@dob.son",
-    #         "password1": "tugboats",
-    #         "password2": "tugboats",
-    #     }, follow=True)
-    #     self.assertTrue(response.status_code == 302)
+    def test_home_route_is_status_ok(self):
+        """Test route using client's headers, etc."""
+        response = self.client.get("/")
+        self.assertTrue(response.status_code == 200)
 
-    # def test_successful_registration_redirects_to_right_place(self):
-    #     """"""
-    #     response = self.client.post("/registration/register/", {
-    #         "username": "bobdobson",
-    #         "email": "bob@dob.son",
-    #         "password1": "tugboats",
-    #         "password2": "tugboats",
-    #     }, follow=True)
-    #     self.assertTrue(response.redirect_chain[0][0] == "/registration/registration/complete/")
+    # def test_home_route_context_foo(self):
+    #     """Test that home route has the right context info."""
+    #     response = self.client.get("/")
+    #     self.assertTrue(response.context["foo"] == "bar")
+
+    # def test_home_route_uses_right_templates(self):
+    #     """Check that home page is using the right templates."""
+    #     response = self.client.get("/")
+    #     self.assertTemplateUsed(response, "imagersite/home.html")
+    #     self.assertTemplateUsed(response, "imagersite/layout.html")
+
+    def test_login_route_redirects(self):
+        """Test that login redirects users."""
+        new_user = UserFactory.create()
+        new_user.save()
+        new_user.username = "testname123"
+        new_user.set_password("testpassword123")
+        new_user.save()
+        response = self.client.post("/login/", {
+            "username": new_user.username,
+            "password": "testpassword123",
+            })
+        self.assertTrue(response.status_code == 302)
+
+    def test_login_route_redirects_to_homepage(self):
+        """Test that login redirects users to homepage."""
+        new_user = UserFactory.create()
+        new_user.save()
+        new_user.username = "username123"
+        new_user.set_password("testing123")
+        new_user.save()
+        response = self.client.post("/login/", {
+            "username": new_user.username,
+            "password": "testing123",
+            }, follow=True)
+        self.assertTrue(response.redirect_chain[0][0] == "/")
+
+    def register_bob(self, follow=False):
+        """Create a dummy user named russellszn."""
+        response = self.client.post("/registration/register/", {
+            "username": "russellszn",
+            "email": "go@hawks.com",
+            "password1": "testing123",
+            "password2": "testing123",
+        }, follow=follow)
+        return response
+
+    def test_can_register_new_user(self):
+        """Post request properly filled out creates new user."""
+        self.assertTrue(User.objects.count() == 0)
+        self.register_bob()
+        self.assertTrue(User.objects.count() == 1)
+
+    def test_registered_user_is_inactive(self):
+        """Test that a newly registered user is not yet activated."""
+        self.register_bob()
+        the_user = User.objects.first()
+        self.assertFalse(the_user.is_active)
+
+    def test_successful_registration_redirects(self):
+        """Test that registration redirects."""
+        response = self.register_bob()
+        self.assertTrue(response.status_code == 302)
+
+    def test_successful_registration_redirects_to_right_place(self):
+        """Test that registration redirects to registration complete page."""
+        response = self.register_bob(follow=True)
+        self.assertTrue(
+            response.redirect_chain[0][0] == '/registration/register/complete/')
