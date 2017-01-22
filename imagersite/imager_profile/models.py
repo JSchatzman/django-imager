@@ -53,6 +53,7 @@ class ImagerProfile(models.Model):
 
 @receiver(post_save, sender=User)
 def make_profile_for_user(sender, instance, **kwargs):
+    """Output info about new user."""
     new_profile = ImagerProfile(user=instance)
     if kwargs['created']:
         profile = ImagerProfile(user=instance)
