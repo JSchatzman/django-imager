@@ -57,7 +57,7 @@ class ProfileFrontEndTests(TestCase):
     def test_home_view_is_status_ok(self):
         """Test route to home view without client info or headers."""
         from imager_profile.views import home_view
-        req = self.request.get("/potato")
+        req = self.request.get("/")
         response = home_view(req)
         self.assertTrue(response.status_code == 200)
 
@@ -66,16 +66,25 @@ class ProfileFrontEndTests(TestCase):
         response = self.client.get("/")
         self.assertTrue(response.status_code == 200)
 
-    # def test_home_route_context_foo(self):
-    #     """Test that home route has the right context info."""
-    #     response = self.client.get("/")
-    #     self.assertTrue(response.context["foo"] == "bar")
+    def test_login_route_is_status_ok(self):
+        """Test route using client's headers, etc."""
+        response = self.client.get("/login/")
+        self.assertTrue(response.status_code == 200)
 
-    # def test_home_route_uses_right_templates(self):
-    #     """Check that home page is using the right templates."""
-    #     response = self.client.get("/")
-    #     self.assertTemplateUsed(response, "imagersite/home.html")
-    #     self.assertTemplateUsed(response, "imagersite/layout.html")
+    def test_invalid_route_is_status_404(self):
+        """Test that invalid route returns error."""
+        response = self.client.get("/bad")
+        self.assertTrue(response.status_code == 404)
+
+    def test_home_route_context_foo(self):
+        """Test that home route has the right context info."""
+        response = self.client.get("/")
+        self.assertContains(response, 'Imager Site')
+
+    def test_home_route_uses_right_templates(self):
+        """Check that home page is using the right templates."""
+        response = self.client.get("/")
+        self.assertTemplateUsed(response, "layout.html")
 
     def test_login_route_redirects(self):
         """Test that login redirects users."""
