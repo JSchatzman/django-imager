@@ -1,5 +1,7 @@
 # django-imager
 
+[![Build Status](https://travis-ci.org/JSchatzman/django-imager.svg?branch=master)](https://travis-ci.org/JSchatzman/django-imager)
+
 [![Coverage Status](https://coveralls.io/repos/github/JSchatzman/django-imager/badge.svg?branch=master)](https://coveralls.io/github/JSchatzman/django-imager?branch=master)
 
 ## Authors: 
