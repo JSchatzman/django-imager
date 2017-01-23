@@ -1,4 +1,4 @@
 from django.contrib import admin
-from imager_profile.models import UserProfile
+from imager_profile.models import ImagerProfile
 
-adin.site.register(UserProfile)
+admin.site.register(ImagerProfile)

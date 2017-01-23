@@ -32,4 +32,5 @@ urlpatterns = [
     url(r'^registration/', include("registration.backends.hmac.urls")),
     # url(r'^home/\w+$', home_view, name='homepage')
     # url(r'^accounts/', include('registration.backends.hmac.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+ # + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
