@@ -17,7 +17,8 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from imager_profile.views import home_view
 from django.contrib.auth import views
-from django.contrib.auth.views import login, logout
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -31,4 +32,4 @@ urlpatterns = [
     url(r'^registration/', include("registration.backends.hmac.urls")),
     # url(r'^home/\w+$', home_view, name='homepage')
     # url(r'^accounts/', include('registration.backends.hmac.urls')),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
