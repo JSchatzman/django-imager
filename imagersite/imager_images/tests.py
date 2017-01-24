@@ -39,3 +39,29 @@ class ImagesTests(TestCase):
     def test_photo_title(self):
         """Test created photo models for titles."""
         self.assertTrue("Photo" in Photo.objects.first().title)
+
+    def test_photo_description(self):
+        """Test created photo models for descriptions when added."""
+        photo = Photo.objects.first()
+        photo.description = "Hallelujah"
+        photo.save()
+        self.assertTrue(Photo.objects.first().description == "Hallelujah")
+
+    def test_photo_published(self):
+        """Test created photo models for published field when added."""
+        photo = Photo.objects.first()
+        photo.published = "SHARED"
+        photo.save()
+        self.assertTrue(Photo.objects.first().published == "SHARED")
+
+    def test_photo_no_phototographer(self):
+        """Test photo created without owner."""
+        photo = Photo.objects.first()
+        self.assertFalse(photo.phototographer)
+
+    def test_photo_phototographer(self):
+        """Test photo created given owner."""
+        photo = Photo.objects.first()
+        user1 = User.objects.first()
+        photo.phototographer = user1.profile
+        self.assertTrue(photo.phototographer)

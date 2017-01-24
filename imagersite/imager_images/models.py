@@ -36,7 +36,9 @@ class Album(models.Model):
 
     owner = models.ForeignKey(ImagerProfile,
                               on_delete=models.CASCADE,
-                              related_name='albums')
+                              related_name='albums',
+                              blank=True,
+                              null=True)
 
     photos = models.ManyToManyField(Photo,
                                     related_name='albums')
