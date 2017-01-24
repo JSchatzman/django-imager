@@ -25,6 +25,10 @@ class Photo(models.model):
                                  choice=PUBLISH_TYPE,
                                  blank=True,
                                  null=True)
+    phototographer = models.ForeignKey(ImagerProfile,
+                                       related_name='photos',
+                                       blank=True,
+                                       null=True)
 
 
 class Album(models.model):
