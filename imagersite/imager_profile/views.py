@@ -14,13 +14,13 @@ def profile_view(request, username=None):
         username = request.user.username
     user_profile = User.objects.get(username=username).profile
     photos = Photo.objects.get(photgrapher=user_profile)
-    albums = Album.objects.get(owner=user_profile)
+    # albums = Album.objects.get(owner=user_profile)
     data = {
-    'public_photos' : photos.filter(PUBLISH_TYPE='PUBLIC')
-    'private_photos' : photos.filter(PUBLISH_TYPE='PRIVATE')
-    'shared_photos' : photos.filter(PUBLISH_TYPE='SHARED')
-            }
-    return render(request, 
-                  template_name,
+        'public_photos': photos.filter(PUBLISH_TYPE='PUBLIC'),
+        'private_photos': photos.filter(PUBLISH_TYPE='PRIVATE'),
+        'shared_photos': photos.filter(PUBLISH_TYPE='SHARED')
+    }
+    return render(request,
+                  'template_name',
                   {'profile': user_profile,
-                   data : data}
+                   data: data})

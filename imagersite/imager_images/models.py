@@ -12,7 +12,7 @@ PUBLISH_TYPE = (
 )
 
 
-class Photo(models.model):
+class Photo(models.Model):
     """Model for photo."""
 
     photo = models.ImageField(upload_to='', blank=True, null=True)
@@ -22,7 +22,7 @@ class Photo(models.model):
     date_uploaded = models.DateField(auto_now=True)
     date_modified = models.DateField(auto_now=True)
     published = models.CharField(max_length=255,
-                                 choice=PUBLISH_TYPE,
+                                 choices=PUBLISH_TYPE,
                                  blank=True,
                                  null=True)
     phototographer = models.ForeignKey(ImagerProfile,
@@ -31,7 +31,7 @@ class Photo(models.model):
                                        null=True)
 
 
-class Album(models.model):
+class Album(models.Model):
     """Model for album."""
 
     owner = models.ForeignKey(ImagerProfile,
@@ -47,7 +47,7 @@ class Album(models.model):
     date_uploaded = models.DateField(auto_now=True)
     date_modified = models.DateField(auto_now=True)
     published = models.CharField(max_length=255,
-                                 choice=PUBLISH_TYPE,
+                                 choices=PUBLISH_TYPE,
                                  blank=True,
                                  null=True)
     cover_photo = models.ImageField(upload_to='', blank=True, null=True)
