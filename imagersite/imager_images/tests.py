@@ -65,3 +65,44 @@ class ImagesTests(TestCase):
         user1 = User.objects.first()
         photo.phototographer = user1.profile
         self.assertTrue(photo.phototographer)
+
+
+class AlbumTest(TestCase):
+    """Album app test runner."""
+
+    def setUp(self):
+        """Setup for test."""
+        self.users = [UserFactory.create() for i in range(10)]
+        self.images = [PhotoFactory.create() for i in range(10)]
+        self.album = [AlbumFactory.create() for i in range(10)]
+
+    def test_album_title(self):
+        """Test album titles."""
+        self.assertTrue("Album" in Album.objects.first().title)
+
+    def test_album_description(self):
+        """Test album description."""
+        album = Album.objects.first()
+        album.description = "an album"
+        album.save()
+        self.assertTrue(Album.objects.first().description == 'an album')
+
+    def test_album_published(self):
+        """Test album published."""
+        album = Album.objects.first()
+        album.published = "PUBLIC"
+        album.save()
+        self.assertTrue(Album.objects.first().published == "PUBLIC")
+
+    def test_album_cover_photo(self):
+        """Test Album cover photo."""
+        album = Album.objects.first()
+        album.cover_photo = '../imagersite/static/hawks.jpg'
+        album.save()
+        self.assertTrue(Album.objects.first().cover_photo)
+
+    def test_album_no_cover_photo(self):
+        """Test no cover photo."""
+        album = Album.objects.first()
+        album.save()
+        self.assertFalse(Album.objects.first().cover_photo)
