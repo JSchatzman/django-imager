@@ -63,8 +63,8 @@ class ImagesTests(TestCase):
         """Test photo created given owner."""
         photo = Photo.objects.first()
         user1 = User.objects.first()
-        photo.phototographer = user1.profile
-        self.assertTrue(photo.phototographer)
+        photo.photographer = user1.profile
+        self.assertTrue(photo.photographer)
 
 
 class AlbumTest(TestCase):

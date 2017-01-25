@@ -1,9 +1,12 @@
-"""Url patterns for imager_profile."""
+"""Url patterns for imager profile."""
 
-from django.conf.utils import url
-from imager_profile.views import profile_view
+from django.conf.urls import url
+from imager_profile.views import (
+    profile_view
+)
 
 urlpatterns = [
-    url(r'^$', profile_view='my_profile'),
-    url(r'^(?P<username>\w+)/$)', profile_view, name='profile')
+    url(r'^$', profile_view, name='my_profile'),
+
+    url(r'^(?P<username>\w+)/$', profile_view, name='profile')
 ]

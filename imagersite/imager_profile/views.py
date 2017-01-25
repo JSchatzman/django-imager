@@ -13,14 +13,14 @@ def profile_view(request, username=None):
     if not username:
         username = request.user.username
     user_profile = User.objects.get(username=username).profile
-    photos = Photo.objects.get(photgrapher=user_profile)
+    #import pdb; pdb.set_trace()
+    photos = Photo.objects.all().filter(photographer=user_profile.user_id)
     # albums = Album.objects.get(owner=user_profile)
     data = {
-        'public_photos': photos.filter(PUBLISH_TYPE='PUBLIC'),
-        'private_photos': photos.filter(PUBLISH_TYPE='PRIVATE'),
-        'shared_photos': photos.filter(PUBLISH_TYPE='SHARED')
+        'public_photos': photos.filter(published='PUBLIC'),
+        'private_photos': photos.filter(published='PRIVATE'),
+        'shared_photos': photos.filter(published='SHARED')
     }
     return render(request,
-                  'template_name',
-                  {'profile': user_profile,
-                   data: data})
+                  '../templates/profile.html',
+                 {'user_profile': user_profile, 'data': data})
