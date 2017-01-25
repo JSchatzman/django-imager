@@ -26,11 +26,8 @@ urlpatterns = [
     url(r'^login/$', views.login, name='login'),
     url(r'^logout/$', views.logout, name='logout'),
     url(r'^$', home_view, name='homepage'),
-
-
-
     url(r'^registration/', include("registration.backends.hmac.urls")),
-    # url(r'^home/\w+$', home_view, name='homepage')
-    # url(r'^accounts/', include('registration.backends.hmac.urls')),
+    # url(r'^profile/', include("imager_profile.urls")),
+    url(r'^images/', include("imager_images.urls"))
 ]
- # + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

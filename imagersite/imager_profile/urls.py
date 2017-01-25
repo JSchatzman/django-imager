@@ -1,6 +1,6 @@
 """Url patterns for imager_profile."""
 
-from django.conf.utils import url
+from django.conf.urls import url
 from imager_profile.views import profile_view
 
 urlpatterns = [
