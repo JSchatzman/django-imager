@@ -1,0 +1,11 @@
+{% extends "imagersite/layout.html" %}
+
+{% block body %}
+<ul>
+    {% for photo in photos %}
+    <li>{{ photo.photo }}</li>
+    <li><a href="{% url 'photo' pk=photo.pk %}">{{ photo.title }}</a></li>
+    <li>{{ photo.description }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "imagersite/layout.html" %}
+
+{% block body %}
+    {% for photo in album.photos %}
+    <section>
+        <ul>
+            <li>{{ photo }}</li>
+        </ul>
+    </section>
+    {% endfor %}
+{% endblock %}
