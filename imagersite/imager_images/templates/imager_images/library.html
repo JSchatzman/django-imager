@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block title %}
+The Library
+{% endblock %}
+{% block body %}
+<h1>Your Library<h1>
+<h2>Albums:</h2>
+{% for album in albums %}
+<img src="{{ album.cover_photo.url }}" width=200px height=200px>
+<p>{{ album.description }}</p>
+{% endfor %}
+<h2>Photos:</h2>
+{% for photo in photos %}
+<img src="{{ photo.photo.url }}" width=200px height=200px>
+<p>{{ photo.description }}</p>
+{% endfor %}
+{% endblock %}

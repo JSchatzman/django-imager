@@ -27,3 +27,13 @@ def all_albums_view(request):
     """View all albums."""
     albums = Album.objects.filter(published='Public').all()
     return render(request, 'imager_images/all_albums.html', {'albums': albums})
+
+
+def library_view(request):
+    """View for library page."""
+    if request.user.is_authenticated():
+        albums = request.user.profile.albums.all()
+        photos = request.user.profile.photos.all()
+        return render(request, "imager_images/library.html", {
+            'albums': albums,
+            'photos': photos})
