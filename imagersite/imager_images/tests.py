@@ -133,3 +133,38 @@ class FrontEndTests(TestCase):
         """Functional test."""
         response = self.client.get(reverse_lazy("albums"))
         self.assertTrue(response.status_code == 200)
+
+    def test_all_albums_route_to_template(self):
+        """Test all albums routes to correct template."""
+        response = self.client.get(reverse_lazy("albums"))
+        self.assertTemplateUsed(response, "layout.html")
+        self.assertTemplateUsed(response, "imager_images/all_albums.html")
+
+    def test_all_photos_view_request_status_ok(self):
+        """Rendered html has status 200."""
+        from imager_images.views import all_photos_view
+        req = self.request.get(reverse_lazy("photos"))
+        response = all_photos_view(req)
+        self.assertTrue(response.status_code == 200)
+
+    def test_all_photos_view_client_status_ok(self):
+        """Functional test."""
+        response = self.client.get(reverse_lazy("photos"))
+        self.assertTrue(response.status_code == 200)
+
+    def test_all_photos_route_to_template(self):
+        """Test all photos routes to correct template."""
+        response = self.client.get(reverse_lazy("photos"))
+        self.assertTemplateUsed(response, "labyout.html")
+        self.assertTemplateUsed(response, "imager_images/all_photos.html")
+
+    # def test_album_view_request_status_ok(self):
+    #     """Rendered html has status 200."""
+    #     from imager_images.views import album_view
+    #     req = self.request.get(reverse_lazy("photos"))
+    #     response = all_photos_view(req)
+    #     self.assertTrue(response.status_code == 200)
+
+    # def test_album_view_client_status_ok(self):
+    #     """Functional test."""
+    #     response = self.client.get(reverse_lazy(""))
