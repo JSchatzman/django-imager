@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from imager_profile.models import ImagerProfile
 from imager_images.models import Photo, Album
 import factory
+from django.test import Client, RequestFactory
+from django.urls import reverse_lazy
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -54,12 +56,12 @@ class ImagesTests(TestCase):
         photo.save()
         self.assertTrue(Photo.objects.first().published == "SHARED")
 
-    def test_photo_no_phototographer(self):
+    def test_photo_no_photographer(self):
         """Test photo created without owner."""
         photo = Photo.objects.first()
-        self.assertFalse(photo.phototographer)
+        self.assertFalse(photo.photographer)
 
-    def test_photo_phototographer(self):
+    def test_photo_photographer(self):
         """Test photo created given owner."""
         photo = Photo.objects.first()
         user1 = User.objects.first()
@@ -106,3 +108,28 @@ class AlbumTest(TestCase):
         album = Album.objects.first()
         album.save()
         self.assertFalse(Album.objects.first().cover_photo)
+
+
+class FrontEndTests(TestCase):
+    """Front end test runner."""
+
+    def setUp(self):
+        """Test dummy."""
+        self.client = Client()
+        self.request = RequestFactory()
+
+        self.users = [UserFactory.create() for i in range(5)]
+        self.photos = [PhotoFactory.create() for i in range(5)]
+        self.albums = [AlbumFactory.create() for i in range(5)]
+
+    def test_all_albums_view_request_status_ok(self):
+        """Rendered html has status 200."""
+        from imager_images.views import all_albums_view
+        req = self.request.get(reverse_lazy("albums"))
+        response = all_albums_view(req)
+        self.assertTrue(response.status_code == 200)
+
+    def test_all_albums_view_client_status_ok(self):
+        """Functional test."""
+        response = self.client.get(reverse_lazy("albums"))
+        self.assertTrue(response.status_code == 200)
