@@ -1,6 +1,7 @@
 from django.test import TestCase, Client, RequestFactory
 from django.contrib.auth.models import User
 from imager_profile.models import ImagerProfile
+from imager_profile.views import profile_view
 import factory
 
 
@@ -122,6 +123,15 @@ class ProfileFrontEndTests(TestCase):
         }, follow=follow)
         return response
 
+
+    def add_testuser(self):
+        """Make testuser and return his profile."""
+        user = UserFactory.create()
+        user.username = 'testuser'
+        user.set_password('testuser')
+        user.save()
+        return user.profile
+
     def test_can_register_new_user(self):
         """Post request properly filled out creates new user."""
         self.assertTrue(User.objects.count() == 0)
@@ -144,3 +154,17 @@ class ProfileFrontEndTests(TestCase):
         response = self.register_bob(follow=True)
         self.assertTrue(
             response.redirect_chain[0][0] == '/registration/register/complete/')
+
+    def test_profile_page_returns_correct_html(self):
+        """Test that accessing test profile returns correct html."""
+        self.add_testuser()
+        response = self.client.get('/profile/testuser/')
+        #import pdb; pdb.set_trace()
+        self.assertContains(response, 'Album Count')
+
+    def test_profile_route_uses_right_templates(self):
+        """Check that profile page is using the right templates."""
+        self.add_testuser()
+        response = self.client.get("/profile/testuser/")
+        self.assertTemplateUsed(response, "layout.html")
+

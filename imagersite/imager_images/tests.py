@@ -54,10 +54,10 @@ class ImagesTests(TestCase):
         photo.save()
         self.assertTrue(Photo.objects.first().published == "SHARED")
 
-    def test_photo_no_phototographer(self):
+    def test_photo_no_photographer(self):
         """Test photo created without owner."""
         photo = Photo.objects.first()
-        self.assertFalse(photo.phototographer)
+        self.assertFalse(photo.photographer)
 
     def test_photo_phototographer(self):
         """Test photo created given owner."""
