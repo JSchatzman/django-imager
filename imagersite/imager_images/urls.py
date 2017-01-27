@@ -1,12 +1,12 @@
 """Url patterns for imager_images."""
 
 from django.conf.urls import url
-from imager_images.views import all_photos_view, all_albums_view, photo_view, album_view, library_view
+from imager_images.views import AllPhotosView, AllAlbumsView, PhotoView, AlbumView, LibraryView
 
 urlpatterns = [
-    url(r'^photos/$', all_photos_view, name="photos"),
-    url(r'^photos/(?P<pk>\d+)/$', photo_view, name="photo"),
-    url(r'^albums/$', all_albums_view, name="albums"),
-    url(r'^albums/(?P<pk>\d+)/$', album_view, name="album"),
-    url(r'^library/$', library_view, name="library")
+    url(r'^photos/$', AllPhotosView.as_view(template_name='imager_images/all_photos.html'), name="photos"),
+    url(r'^photos/(?P<pk>\d+)/$', PhotoView.as_view(template_name='imager_images/photo_id.html'), name="photo"),
+    url(r'^albums/$', AllAlbumsView.as_view(template_name='imager_images/all_albums.html'), name="albums"),
+    url(r'^albums/(?P<pk>\d+)/$', AlbumView.as_view(template_name='imager_images/album_id.html'), name="album"),
+    url(r'^library/$', LibraryView.as_view(template_name='imager_images/library.html'), name="library")
 ]

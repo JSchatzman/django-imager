@@ -24,30 +24,48 @@ def photo_view(request, pk):
     return render(request, 'imager_images/photo_id.html', {'photo': photo})
 
 
-def album_view(request, pk):
+class AlbumView(TemplateView):
     """View a album."""
-    album = Album.objects.get(pk=pk)
-    photos = album.photos.all()
-    return render(request, 'imager_images/album_id.html', {"album": album, "photos": photos})
+
+    template_name = 'imager_images/album_id.html'
+
+    def get_context_data(self, pk):
+        """Get context for album view."""
+        album = Album.objects.get(pk=pk)
+        photos = album.photos.all()
+        return {"album": album, "photos": photos}
 
 
-def all_photos_view(request):
+def AllPhotosView(TemplateView):
     """View all photos."""
-    photos = Photo.objects.filter(published='Public').all()
-    return render(request, 'imager_images/all_photos.html', {'photos': photos})
+
+    template_name = 'imager_images/all_photos.html'
+
+    def get_context_data(self):
+        """Get context for all photos view."""
+        photos = Photo.objects.filter(published='Public').all()
+        return {'photos': photos}
 
 
-def all_albums_view(request):
+def AllAlbumsView(TemplateView):
     """View all albums."""
-    albums = Album.objects.filter(published='Public').all()
-    return render(request, 'imager_images/all_albums.html', {'albums': albums})
+
+    template_name = 'imager_images/all_albums.html'
+
+    def get_context_data(self):
+        """Get context for all albums view."""
+        albums = Album.objects.filter(published='Public').all()
+        return {'albums': albums}
 
 
-def library_view(request):
+def LibraryView(TemplateView):
     """View for library page."""
-    if request.user.is_authenticated():
-        albums = request.user.profile.albums.all()
-        photos = request.user.profile.photos.all()
-        return render(request, "imager_images/library.html", {
-            'albums': albums,
-            'photos': photos})
+
+    template_name = 'imager_images/library.html'
+
+    def get_context_data(self, request):
+        """Get context for library view."""
+        if request.user.is_authenticated():
+            albums = request.user.profile.albums.all()
+            photos = request.user.profile.photos.all()
+            return {'albums': albums, 'photos': photos}
