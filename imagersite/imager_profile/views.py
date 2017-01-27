@@ -1,13 +1,14 @@
 """Implementation of profile views."""
 
-from django.shortcuts import render
 from django.contrib.auth.models import User
 from imager_images.models import Photo, Album
 from django.views.generic import TemplateView
 
+
 # Create your views here.
 class HomeView(TemplateView):
     """View for the home page."""
+
     template_name = 'imagersite/home.html'
 
     def get_context_data(self, name=''):
