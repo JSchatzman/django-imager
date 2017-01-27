@@ -2,6 +2,8 @@ from django.shortcuts import render
 from imager_images.models import Photo, Album
 from django.views.generic import TemplateView
 
+from django.shortcuts import redirect
+
 
 class PhotoView(TemplateView):
     """Class based view for a Photo."""
@@ -57,9 +59,9 @@ class LibraryView(TemplateView):
 
     template_name = 'imager_images/library.html'
 
-    def get_context_data(self, request):
+    def get_context_data(self):
         """Get context for library view."""
-        if request.user.is_authenticated():
-            albums = request.user.profile.albums.all()
-            photos = request.user.profile.photos.all()
+        if self.request.user.is_authenticated():
+            albums = self.request.user.profile.albums.all()
+            photos = self.request.user.profile.photos.all()
             return {'albums': albums, 'photos': photos}
