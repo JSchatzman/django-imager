@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from imager_images.models import Photo, Album
-from imager_images.forms import AddPhotoForm
+from imager_images.forms import AddPhotoForm, AddAlbumForm
 from django.views.generic import TemplateView, CreateView, ListView
 
 from django.shortcuts import redirect
@@ -88,3 +88,21 @@ class AddPhotoView(CreateView):
             photo.published_date = timezone.now()
         photo.save()
         return redirect('library', pk=photo.pk)
+
+
+class AddAlbumView(CreateView):
+    """Class based view for creating photos."""
+
+    model = Album
+    form_class = AddAlbumForm
+    template_name = 'imager_images/add_album.html'
+
+    def form_valid(self, form):
+        album = form.save()
+        album.owner = self.request.user.profile
+        album.date_uploaded = timezone.now()
+        album.date_modified = timezone.now()
+        if album.published == "PUBLIC":
+            album.published_date = timezone.now()
+        album.save()
+        return redirect('library', pk=album.pk)

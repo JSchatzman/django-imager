@@ -3,6 +3,15 @@
 The Library
 {% endblock %}
 {% block body %}
+<br>
+<form action="{% url 'add_photo' %}">
+    <input type="submit" value="Add Photo">
+</form>
+<br>
+<br>
+<form action="{% url 'add_album' %}">
+    <input type="submit" value="Add Album">
+</form>
 <h1>Your Library<h1>
 <h2>Albums:</h2>
 {% for album in albums %}
