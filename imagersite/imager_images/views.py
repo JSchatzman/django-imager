@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from imager_images.models import Photo, Album
-from django.views.generic import TemplateView
+from imager_images.forms import AddPhotoForm
+from django.views.generic import TemplateView, CreateView
 
 from django.shortcuts import redirect
+from django.utils import timezone
 
 
 class PhotoView(TemplateView):
@@ -16,7 +18,7 @@ class PhotoView(TemplateView):
         if photo.published == 'PUBLIC' or photo.photographer.user == self.request.user:
             return {'photo': photo}
         else:
-            error = "You cannot view this photo because Kam Chancellor hit you in face."
+            error = "You cannot view this photo because Kam Chancellor laid the boom."
             return {"error": error}
 
 
@@ -65,3 +67,21 @@ class LibraryView(TemplateView):
             albums = self.request.user.profile.albums.all()
             photos = self.request.user.profile.photos.all()
             return {'albums': albums, 'photos': photos}
+
+
+class AddPhotoView(CreateView):
+    """Class based view for creating photos."""
+
+    model = Photo
+    form_class = AddPhotoForm
+    template_name = 'imager_images/add_photo.html'
+
+    def form_valid(self, form):
+        photo = form.save()
+        photo.photographer = self.request.user.profile
+        photo.date_uploaded = timezone.now()
+        photo.date_modified = timezone.now()
+        if photo.published == "PUBLIC":
+            photo.published_date = timezone.now()
+        photo.save()
+        return redirect('library', pk=photo.pk)

@@ -5,7 +5,6 @@ from imager_images.models import Photo, Album
 from django.views.generic import TemplateView
 
 
-# Create your views here.
 class HomeView(TemplateView):
     """View for the home page."""
 
