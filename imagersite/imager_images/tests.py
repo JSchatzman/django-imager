@@ -155,7 +155,7 @@ class FrontEndTests(TestCase):
     def test_all_photos_route_to_template(self):
         """Test all photos routes to correct template."""
         response = self.client.get(reverse_lazy("photos"))
-        self.assertTemplateUsed(response, "labyout.html")
+        self.assertTemplateUsed(response, "layout.html")
         self.assertTemplateUsed(response, "imager_images/all_photos.html")
 
     # def test_album_view_request_status_ok(self):
