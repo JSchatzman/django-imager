@@ -15,17 +15,17 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from imager_profile.views import home_view
 from django.contrib.auth import views
 from django.conf import settings
 from django.conf.urls.static import static
+from imager_profile.views import HomeView
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^login/$', views.login, name='login'),
     url(r'^logout/$', views.logout, {'next_page': '/'}, name='logout'),
-    url(r'^$', home_view, name='homepage'),
+    url(r'^$', HomeView.as_view(template_name='imagersite/home.html'), name='homepage'),
     url(r'^registration/', include("registration.backends.hmac.urls")),
     url(r'^profile/', include('imager_profile.urls')),
     url(r'^images/', include("imager_images.urls"))
