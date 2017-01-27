@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from imager_images.models import Photo, Album
 from imager_images.forms import AddPhotoForm
-from django.views.generic import TemplateView, CreateView
+from django.views.generic import TemplateView, CreateView, ListView
 
 from django.shortcuts import redirect
 from django.utils import timezone
@@ -34,26 +34,29 @@ class AlbumView(TemplateView):
         return {"album": album, "photos": photos}
 
 
-class AllPhotosView(TemplateView):
-    """View all photos."""
+class AllPhotosView(ListView):
+    """View all plbums."""
 
     template_name = 'imager_images/all_photos.html'
+    model = Photo
+    context_object_name = "photos"
 
-    def get_context_data(self):
-        """Get context for all photos view."""
-        photos = Photo.objects.filter(published='Public').all()
-        return {'photos': photos}
+    def get_queryset(self):
+        """Return list of all photos for this user."""
+        return Photo.objects.filter(photographer=self.request.user.profile)
 
 
-class AllAlbumsView(TemplateView):
+class AllAlbumsView(ListView):
     """View all albums."""
 
     template_name = 'imager_images/all_albums.html'
+    model = Album
+    context_object_name = "albums"
 
-    def get_context_data(self):
-        """Get context for all albums view."""
-        albums = Album.objects.filter(published='Public').all()
-        return {'albums': albums}
+    def get_queryset(self):
+        """Return list of all albums for this user."""
+        # import pdb; pdb.set_trace()
+        return Album.objects.filter(owner=self.request.user.profile)
 
 
 class LibraryView(TemplateView):

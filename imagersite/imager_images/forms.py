@@ -10,7 +10,7 @@ class AddPhotoForm(forms.ModelForm):
         exclude = ['photographer', 'date_modified', 'date_published', 'date_uploaded']
 
 
-class AddAlbumForm(forms.ModelFor):
+class AddAlbumForm(forms.ModelForm):
     """Create an album form."""
 
     class Meta:

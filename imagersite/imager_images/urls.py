@@ -1,7 +1,14 @@
 """Url patterns for imager_images."""
 
 from django.conf.urls import url
-from imager_images.views import AllPhotosView, AllAlbumsView, PhotoView, AlbumView, LibraryView, AddPhotoView
+from imager_images.views import (
+    AllPhotosView,
+    AllAlbumsView,
+    PhotoView,
+    AlbumView,
+    LibraryView,
+    AddPhotoView
+)
 
 urlpatterns = [
     url(r'^photos/$', AllPhotosView.as_view(), name="photos"),
