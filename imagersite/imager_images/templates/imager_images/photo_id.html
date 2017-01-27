@@ -2,6 +2,9 @@
 
 {% block body %}
 <ul>
+    {% if error %}
+    <h3>{{ error }}</h3>
+    {% else %}
     <li>{{ photo.photo }}</li>
     <li>{{ photo.title }}</li>
     <li>{{ photo.description }}</li>

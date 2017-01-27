@@ -1,7 +1,21 @@
 from django.shortcuts import render
 from imager_images.models import Photo, Album
+from django.views.generic import TemplateView
 
-# Create your views here.
+
+class PhotoView(TemplateView):
+    """Class based view for a Photo."""
+
+    template_name = "imager_images/photo_id.html"
+
+    def get_context_data(self, pk):
+        """Rewrite get_context_data to add our data."""
+        photo = Photo.objects.get(pk=pk)
+        if photo.published == 'PUBLIC' or photo.photographer.user == self.request.user:
+            return {'photo': photo}
+        else:
+            error = "You cannot view this photo because Kam Chancellor hit you in face."
+            return {"error": error}
 
 
 def photo_view(request, pk):
