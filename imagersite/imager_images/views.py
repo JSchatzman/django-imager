@@ -18,12 +18,6 @@ class PhotoView(TemplateView):
             return {"error": error}
 
 
-def photo_view(request, pk):
-    """View a photo."""
-    photo = Photo.objects.get(pk=pk)
-    return render(request, 'imager_images/photo_id.html', {'photo': photo})
-
-
 class AlbumView(TemplateView):
     """View a album."""
 
@@ -36,7 +30,7 @@ class AlbumView(TemplateView):
         return {"album": album, "photos": photos}
 
 
-def AllPhotosView(TemplateView):
+class AllPhotosView(TemplateView):
     """View all photos."""
 
     template_name = 'imager_images/all_photos.html'
@@ -47,7 +41,7 @@ def AllPhotosView(TemplateView):
         return {'photos': photos}
 
 
-def AllAlbumsView(TemplateView):
+class AllAlbumsView(TemplateView):
     """View all albums."""
 
     template_name = 'imager_images/all_albums.html'
@@ -58,7 +52,7 @@ def AllAlbumsView(TemplateView):
         return {'albums': albums}
 
 
-def LibraryView(TemplateView):
+class LibraryView(TemplateView):
     """View for library page."""
 
     template_name = 'imager_images/library.html'
