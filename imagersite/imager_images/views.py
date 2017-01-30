@@ -87,7 +87,7 @@ class AddPhotoView(CreateView):
         if photo.published == "PUBLIC":
             photo.published_date = timezone.now()
         photo.save()
-        return redirect('library', pk=photo.pk)
+        return redirect('library')
 
 
 class AddAlbumView(CreateView):
@@ -105,4 +105,4 @@ class AddAlbumView(CreateView):
         if album.published == "PUBLIC":
             album.published_date = timezone.now()
         album.save()
-        return redirect('library', pk=album.pk)
+        return redirect('library')
