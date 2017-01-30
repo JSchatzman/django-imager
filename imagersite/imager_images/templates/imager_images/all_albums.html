@@ -3,7 +3,7 @@
 {% block body %}
 <ul>
     {% for album in albums %}
-    <li>{{ album.cover_photo }}</li>
+    <li><img src="{{ album.cover_photo.url }}"></li>
     <li><a href="{% url 'album' pk=album.pk %}">{{ album.title }}</a></li>
     <li>{{ album.description }}</li>
     {% endfor %}

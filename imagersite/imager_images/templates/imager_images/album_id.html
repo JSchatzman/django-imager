@@ -1,11 +1,11 @@
 {% extends "layout.html" %}
 
 {% block body %}
-    {% for photo in album.photos %}
     <section>
         <ul>
-            <li>{{ photo }}</li>
+        {% for photo in photos %}
+            <li><img src="{{ photo.photo.url }}"></li>
+        {% endfor %}
         </ul>
     </section>
-    {% endfor %}
 {% endblock %}
