@@ -3,6 +3,8 @@
 from django.contrib.auth.models import User
 from imager_images.models import Photo, Album
 from django.views.generic import TemplateView
+from django.shortcuts import redirect
+from imager_profile.forms import EditProfileForm
 
 
 class HomeView(TemplateView):
@@ -35,3 +37,17 @@ class ProfileView(TemplateView):
             'album_count': len(albums)
         }
         return {'user_profile': user_profile, 'data': data}
+
+
+class EditProfileView(TemplateView):
+    """Edit profile view."""
+
+    model = User
+    form_class = EditProfileForm
+    template_name = '../templates/edit_profile.html'
+
+    def fom_valid(self, form):
+        """Get context for edit profile."""
+        user = form.save()
+        user.save()
+        return redirect('profile', username=user.username)

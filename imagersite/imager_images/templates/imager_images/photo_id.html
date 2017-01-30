@@ -5,10 +5,11 @@
     {% if error %}
     <h3>{{ error }}</h3>
     {% else %}
-    <li>{{ photo.photo }}</li>
+    <li><img src="{{ photo.photo.url }}"></li>
     <li>{{ photo.title }}</li>
     <li>{{ photo.description }}</li>
-    <li>{{ photo.date_uloaded }}</li>
+    <li>{{ photo.date_uploaded }}</li>
     <li>{{ photo.photographer }}</li>
+    {% endif %}
 </ul>
 {% endblock %}
