@@ -5,7 +5,7 @@
     {% if error %}
     <h3>{{ error }}</h3>
     {% else %}
-    <li><img src="{{ photo.photo.url }}"></li>
+    <li><img src="{{ photo.photo.url }}" style="max-width: 80%"></li>
     <li>{{ photo.title }}</li>
     <li>{{ photo.description }}</li>
     <li>{{ photo.date_uploaded }}</li>
