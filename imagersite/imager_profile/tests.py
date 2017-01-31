@@ -1,7 +1,7 @@
 from django.test import TestCase, Client, RequestFactory
 from django.contrib.auth.models import User
 from imager_profile.models import ImagerProfile
-from imager_profile.views import profile_view
+from imager_profile.views import ProfileView, HomeView
 import factory
 
 
@@ -57,9 +57,10 @@ class ProfileFrontEndTests(TestCase):
 
     def test_home_view_is_status_ok(self):
         """Test route to home view without client info or headers."""
-        from imager_profile.views import home_view
+        from imager_profile.views import HomeView
         req = self.request.get("/")
-        response = home_view(req)
+        view = HomeView.as_view()
+        response = view(req)
         self.assertTrue(response.status_code == 200)
 
     def test_home_route_is_status_ok(self):
