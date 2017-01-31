@@ -35,20 +35,19 @@
 {% if user == user_profile.user %}
     <p><b>Private:</b> {{ data.photo_published }}<p>
     {% for photo in data.private_photos %}
-        <img src="{{ photo.photo.url }}" style="max-width: 80%">
+        <img src="{{ photo.photo.url }}" style="max-width: 70%">
+        <li><a href="{% url 'photo' pk=photo.pk %}">{{ photo.title }}</a></li>
+        <li>Description: {{ photo.description }}</li>
         <br>
-        <a href="{% url 'photo' pk=photo.pk %}">{{ photo.title }}</a>
-        <br>
-        Description: {{ photo.description }}
     {% endfor %}
 {% endif %}
 
 
 <p><b>Public:</b> {{ data.photo_published }}<p>
     {% for photo in data.public_photos %}
-        <img src="{{ photo.photo.url }}" style="max-width: 80%">
-        <br>
-        <a href="{% url 'photo' pk=photo.pk %}">{{ photo.title }}</a>
+        <img src="{{ photo.photo.url }}" style="max-width: 70%">
+        <li><a href="{% url 'photo' pk=photo.pk %}">{{ photo.title }}</a></li>
+        <li>Description: {{ photo.description }}</li>
         <br>
         Description: {{ photo.description }}
     {% endfor %}
