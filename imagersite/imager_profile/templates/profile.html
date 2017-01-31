@@ -20,21 +20,39 @@
 <p><b>Photography Style:</b> {{ user_profile.photo_type }}</p>
 
 
-<h3>Business Info</h3>
+<h2>Business Info</h2>
 <p><b>Hireable:</b> {{ user_profile.hireable }}</p>
 <p><b>Willing to travel:</b> {{ user_profile.travel_radius }}</p>
 
 
-<h3>Profile Overview</h3>
+<h2>Profile Overview</h2>
 <p><b>Photo Count:</b> {{ data.photo_count }}</p>
 <p><b>Album Count:</b> {{ data.album_count }}</p>
 
 
-<h3>Photos</h3>
+<h1>Photos</h1>
+
 {% if user == user_profile.user %}
-    <p><b>Private:</b> {{ data.photos_private }}<p>
+    <p><b>Private:</b> {{ data.photo_published }}<p>
+    {% for photo in data.private_photos %}
+        <img src="{{ photo.photo.url }}" style="max-width: 80%">
+        <br>
+        <a href="{% url 'photo' pk=photo.pk %}">{{ photo.title }}</a>
+        <br>
+        Description: {{ photo.description }}
+    {% endfor %}
 {% endif %}
+
+
 <p><b>Public:</b> {{ data.photo_published }}<p>
+    {% for photo in data.public_photos %}
+        <img src="{{ photo.photo.url }}" style="max-width: 80%">
+        <br>
+        <a href="{% url 'photo' pk=photo.pk %}">{{ photo.title }}</a>
+        <br>
+        Description: {{ photo.description }}
+    {% endfor %}
+
 
 <h3>Albums</h3>
 {% if user == user_profile.user %}

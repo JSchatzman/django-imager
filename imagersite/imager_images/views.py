@@ -18,7 +18,7 @@ class PhotoView(TemplateView):
         if photo.published == 'PUBLIC' or photo.photographer.user == self.request.user:
             return {'photo': photo}
         else:
-            error = "You cannot view this photo because Kam Chancellor laid the boom."
+            error = "You cannot view this photo because you are not logged in."
             return {"error": error}
 
 
