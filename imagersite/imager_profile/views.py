@@ -2,9 +2,10 @@
 
 from django.contrib.auth.models import User
 from imager_images.models import Photo, Album
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, UpdateView
 from django.shortcuts import redirect
-#from imager_profile.forms import EditProfileForm
+from imager_profile.forms import EditProfileForm
+from imager_profile.models import ImagerProfile
 
 
 class HomeView(TemplateView):
@@ -39,15 +40,22 @@ class ProfileView(TemplateView):
         return {'user_profile': user_profile, 'data': data}
 
 
-# class EditProfileView(TemplateView):
-#     """Edit profile view."""
+class EditProfileView(UpdateView):
+    """Edit profile view."""
 
-#     model = User
-#     form_class = EditProfileForm
-#     template_name = '../templates/edit_profile.html'
+    model = ImagerProfile
+    form_class = EditProfileForm
+    template_name = '../templates/edit_profile_form.html'
 
-#     def fom_valid(self, form):
-#         """Get context for edit profile."""
-#         user = form.save()
-#         user.save()
-#         return redirect('profile', username=user.username)
+    def get(self, request, **kwargs):
+        self.object = User.objects.get(username=self.request.user)
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        context = self.get_context_data(object=self.object, form=form)
+        return self.render_to_response(context)
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.user = self.request.user
+        self.object.save()
+        return redirect('profile', username=self.object.user.username)

@@ -30,8 +30,9 @@
 <p><b>Album Count:</b> {{ data.album_count }}</p>
 
 
-<h3>Photos</h3>
 {% if user == user_profile.user %}
+
+<h3>Photos</h3>
     <p><b>Private:</b> {{ data.photos_private }}<p>
 {% endif %}
 <p><b>Public:</b> {{ data.photo_published }}<p>
