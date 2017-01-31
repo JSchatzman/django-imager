@@ -3,9 +3,10 @@
 from django.contrib.auth.models import User
 from imager_images.models import Photo, Album
 from django.views.generic import TemplateView, UpdateView
-from django.shortcuts import redirect
 from imager_profile.forms import EditProfileForm
 from imager_profile.models import ImagerProfile
+from django.http import HttpResponseRedirect
+from django.urls import reverse_lazy
 
 
 class HomeView(TemplateView):
@@ -41,21 +42,24 @@ class ProfileView(TemplateView):
 
 
 class EditProfileView(UpdateView):
-    """Edit profile view."""
+    """Update profile."""
 
-    model = ImagerProfile
+    login_required = True
+    template_name = '../templates/eidt_profile_form.html'
+    success_url = reverse_lazy('profile')
     form_class = EditProfileForm
-    template_name = '../templates/edit_profile_form.html'
+    model = ImagerProfile
 
-    def get(self, request, **kwargs):
-        self.object = User.objects.get(username=self.request.user)
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-        context = self.get_context_data(object=self.object, form=form)
-        return self.render_to_response(context)
+    def get_object(self):
+        """Define what profile to edit."""
+        return self.request.user.profile
 
     def form_valid(self, form):
-        self.object = form.save(commit=False)
-        self.object.user = self.request.user
+        """If form post is successful, set the object's owner."""
+        self.object = form.save()
+        self.object.user.first_name = form.cleaned_data['First Name']
+        self.object.user.last_name = form.cleaned_data['Last Name']
+        self.object.user.email = form.cleaned_data['Email']
+        self.object.user.save()
         self.object.save()
-        return redirect('profile', username=self.object.user.username)
+        return HttpResponseRedirect(self.get_success_url())
