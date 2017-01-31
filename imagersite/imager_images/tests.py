@@ -68,6 +68,33 @@ class ImagesTests(TestCase):
         photo.photographer = user1.profile
         self.assertTrue(photo.photographer)
 
+    def test_image_has_owner(self):
+        """Test that image has an owner after assignment."""
+        image = Photo.objects.first()
+        user1 = User.objects.first()
+        image.photographer = user1.profile
+        self.assertTrue(image.photographer)
+
+    def test_owner_has_image(self):
+        """Test that the owner has the image."""
+        image = Photo.objects.first()
+        user1 = User.objects.first()
+        image.photographer = user1.profile
+        image.save()
+        self.assertTrue(user1.profile.photos.count() == 1)
+
+    def test_two_images_have_owner(self):
+        """Test two images have the same owner."""
+        image1 = Photo.objects.all()[0]
+        image2 = Photo.objects.all()[1]
+        user1 = User.objects.first()
+        image1.photographer = user1.profile
+        image2.photographer = user1.profile
+        image1.save()
+        image2.save()
+        self.assertTrue(image1.photographer == user1.profile)
+        self.assertTrue(image2.photographer == user1.profile)
+
 
 class AlbumTest(TestCase):
     """Album app test runner."""
@@ -113,6 +140,18 @@ class AlbumTest(TestCase):
         """Test that an album has no image before assignemnt."""
         album = Album.objects.first()
         self.assertTrue(album.photos.count() == 0)
+
+    def test_image_has_no_album(self):
+        """Test that the image is in an album."""
+        image = Photo.objects.first()
+        self.assertTrue(image.albums.count() == 0)
+
+    def test_image_has_album(self):
+        """Test that the image is in an album."""
+        image = Photo.objects.first()
+        album1 = Album.objects.first()
+        image.albums.add(album1)
+        self.assertTrue(image.albums.count() == 1)
 
 
 class FrontEndTests(TestCase):
