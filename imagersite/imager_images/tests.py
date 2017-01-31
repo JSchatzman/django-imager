@@ -109,6 +109,11 @@ class AlbumTest(TestCase):
         album.save()
         self.assertFalse(Album.objects.first().cover_photo)
 
+    def test_album_with_no_photos(self):
+        """Test that an album has no image before assignemnt."""
+        album = Album.objects.first()
+        self.assertTrue(album.photos.count() == 0)
+
 
 class FrontEndTests(TestCase):
     """Front end test runner."""
