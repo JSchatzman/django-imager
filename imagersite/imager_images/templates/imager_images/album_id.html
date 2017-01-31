@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <section>
+        <ul>
+        {% for photo in photos %}
+            <li><img src="{{ photo.photo.url }}"></li>
+        {% endfor %}
+        </ul>
+    </section>
+{% endblock %}

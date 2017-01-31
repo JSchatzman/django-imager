@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block title %}
+The Library
+{% endblock %}
+{% block body %}
+<br>
+<form action="{% url 'add_photo' %}">
+    <input type="submit" value="Add Photo">
+</form>
+<br>
+<br>
+<form action="{% url 'add_album' %}">
+    <input type="submit" value="Add Album">
+</form>
+<h1>Your Library<h1>
+<h2>Albums:</h2>
+{% for album in albums %}
+<img src="{{ album.cover_photo.url }}" width=100px height=100px>
+<p>{{ album.description }}</p>
+{% endfor %}
+<h2>Photos:</h2>
+{% for photo in photos %}
+<img src="{{ photo.photo.url }}" width=100px height=100px>
+<p>{{ photo.description }}</p>
+{% endfor %}
+{% endblock %}

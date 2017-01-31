@@ -1,0 +1,82 @@
+
+{% extends "layout.html" %}
+
+{% block title %}
+
+{{ user_profile.user.username }}'s Profile
+
+{% endblock %}
+
+{% block body %}
+
+
+<h1> Hello {{ user_profile.user.username }} </h1>
+<br>
+<p><b>Username:</b> {{ user_profile.user.username }}</p>
+<p><b>Name:</b> {{ user_profile.user.name }}</p>
+<p><b>Address:</b> {{ user_profile.address}}</p>
+<p><b>Phone:</b> {{ user_profile.phone}}</p>
+<p><b>Bio:</b> {{ user_profile.bio }}</p>
+<p><b>Camera:</b> {{ user_profile.camera }}</p>
+<p><b>Photography Style:</b> {{ user_profile.photo_type }}</p>
+
+
+<h2>Business Info</h2>
+<p><b>Hireable:</b> {{ user_profile.hireable }}</p>
+<p><b>Willing to travel:</b> {{ user_profile.travel_radius }}</p>
+
+
+<h2>Profile Overview</h2>
+<p><b>Photo Count:</b> {{ data.photo_count }}</p>
+<p><b>Album Count:</b> {{ data.album_count }}</p>
+
+
+<h1>Photos</h1>
+
+{% if user == user_profile.user %}
+    <p><b>Private:</b> {{ data.photo_published }}<p>
+    {% for photo in data.private_photos %}
+        <img src="{{ photo.photo.url }}" style="max-width: 70%">
+        <li><a href="{% url 'photo' pk=photo.pk %}">{{ photo.title }}</a></li>
+        <li>Description: {{ photo.description }}</li>
+        <br>
+    {% endfor %}
+{% endif %}
+
+
+<p><b>Public:</b></p>
+    {% for photo in data.public_photos %}
+        <img src="{{ photo.photo.url }}" style="max-width: 70%">
+        <li><a href="{% url 'photo' pk=photo.pk %}">{{ photo.title }}</a></li>
+        <li>Description: {{ photo.description }}</li>
+        <br>
+    {% endfor %}
+
+<h3>Albums</h3>
+{% if user == user_profile.user %}
+<p><b>Private</b>
+    {% for album in data.private_albums %}
+        <img src="{{ photo.photo.url }}" style="max-width: 70%">
+        <li><a href="{% url 'album' pk=album.pk %}">{{ album.title }}</a></li>
+        <li>Description: {{ album.description }}</li>
+        <br>
+    {% endfor %}
+{% endif %}
+
+
+<p><b>Public</b>
+    {% for album in data.public_albums %}
+        <img src="{{ photo.photo.url }}" style="max-width: 70%">
+        <li><a href="{% url 'album' pk=album.pk %}">{{ album.title }}</a></li>
+        <li>Description: {{ album.description }}</li>
+        <br>
+    {% endfor %}
+
+
+<a href="{% url 'library' %}" class="btn btn-primary">Gallery</a>
+
+
+
+
+{% endblock body %}
+

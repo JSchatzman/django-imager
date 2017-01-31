@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<ul>
+    {% for album in albums %}
+    <img src="{{ album.cover_photo.url }}" style="max-width: 70%">
+    <li>Title: <a href="{% url 'album' pk=album.pk %}">{{ album.title }}</a></li>
+    <li>Description: {{ album.description }}</li>
+    <br><br>
+    {% endfor %}
+</ul>
+{% endblock %}
