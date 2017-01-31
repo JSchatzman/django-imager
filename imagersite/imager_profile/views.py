@@ -2,9 +2,11 @@
 
 from django.contrib.auth.models import User
 from imager_images.models import Photo, Album
-from django.views.generic import TemplateView
-from django.shortcuts import redirect
-#from imager_profile.forms import EditProfileForm
+from django.views.generic import TemplateView, UpdateView
+from imager_profile.forms import EditProfileForm
+from imager_profile.models import ImagerProfile
+from django.http import HttpResponseRedirect
+from django.urls import reverse_lazy
 
 
 class HomeView(TemplateView):
@@ -33,21 +35,33 @@ class ProfileView(TemplateView):
             'public_photos': photos.filter(published='PUBLIC'),
             'private_photos': photos.filter(published='PRIVATE'),
             'shared_photos': photos.filter(published='SHARED'),
+            'public_albums': albums.filter(published='PUBLIC'),
+            'private_albums': albums.filter(published='PRIVATE'),
             'photo_count': len(photos),
             'album_count': len(albums)
         }
         return {'user_profile': user_profile, 'data': data}
 
 
-# class EditProfileView(TemplateView):
-#     """Edit profile view."""
+class EditProfileView(UpdateView):
+    """Update profile."""
 
-#     model = User
-#     form_class = EditProfileForm
-#     template_name = '../templates/edit_profile.html'
+    login_required = True
+    template_name = '../templates/eidt_profile_form.html'
+    success_url = reverse_lazy('profile')
+    form_class = EditProfileForm
+    model = ImagerProfile
 
-#     def fom_valid(self, form):
-#         """Get context for edit profile."""
-#         user = form.save()
-#         user.save()
-#         return redirect('profile', username=user.username)
+    def get_object(self):
+        """Define what profile to edit."""
+        return self.request.user.profile
+
+    def form_valid(self, form):
+        """If form post is successful, set the object's owner."""
+        self.object = form.save()
+        self.object.user.first_name = form.cleaned_data['First Name']
+        self.object.user.last_name = form.cleaned_data['Last Name']
+        self.object.user.email = form.cleaned_data['Email']
+        self.object.user.save()
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
