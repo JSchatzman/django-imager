@@ -79,10 +79,11 @@ WSGI_APPLICATION = 'imagersite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'imagersite',
+        'NAME': os.environ.get("DATABASE_NAME", ''),
         'USER': os.environ.get("USER_NAME", ''),
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'PASSWORD': os.environ.get("DB_PASSWORD", ''),
+        'HOST': os.environ.get("HOST", ''),
+        'PORT': os.environ.get("PORT", '5432'),
         'TEST': {
             'NAME': 'test_imager'
         }
