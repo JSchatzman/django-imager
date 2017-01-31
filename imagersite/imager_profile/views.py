@@ -33,6 +33,8 @@ class ProfileView(TemplateView):
             'public_photos': photos.filter(published='PUBLIC'),
             'private_photos': photos.filter(published='PRIVATE'),
             'shared_photos': photos.filter(published='SHARED'),
+            'public_albums': albums.filter(published='PUBLIC'),
+            'private_albums': albums.filter(published='PRIVATE'),
             'photo_count': len(photos),
             'album_count': len(albums)
         }

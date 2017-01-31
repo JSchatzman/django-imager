@@ -1,3 +1,4 @@
+
 {% extends "layout.html" %}
 
 {% block title %}
@@ -43,22 +44,33 @@
 {% endif %}
 
 
-<p><b>Public:</b> {{ data.photo_published }}<p>
+<p><b>Public:</b></p>
     {% for photo in data.public_photos %}
         <img src="{{ photo.photo.url }}" style="max-width: 70%">
         <li><a href="{% url 'photo' pk=photo.pk %}">{{ photo.title }}</a></li>
         <li>Description: {{ photo.description }}</li>
         <br>
-        Description: {{ photo.description }}
     {% endfor %}
-
 
 <h3>Albums</h3>
 {% if user == user_profile.user %}
-    <p><b>Private:</b> {{ data.album_private }}<p>
+<p><b>Private</b>
+    {% for album in data.private_albums %}
+        <img src="{{ photo.photo.url }}" style="max-width: 70%">
+        <li><a href="{% url 'album' pk=album.pk %}">{{ album.title }}</a></li>
+        <li>Description: {{ album.description }}</li>
+        <br>
+    {% endfor %}
 {% endif %}
 
-<p><b>Public:</b> {{ data.album_publised }}<p>
+
+<p><b>Public</b>
+    {% for album in data.public_albums %}
+        <img src="{{ photo.photo.url }}" style="max-width: 70%">
+        <li><a href="{% url 'album' pk=album.pk %}">{{ album.title }}</a></li>
+        <li>Description: {{ album.description }}</li>
+        <br>
+    {% endfor %}
 
 
 <a href="{% url 'library' %}" class="btn btn-primary">Gallery</a>
@@ -67,5 +79,4 @@
 
 
 {% endblock body %}
-
 
