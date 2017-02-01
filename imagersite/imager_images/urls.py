@@ -8,14 +8,18 @@ from imager_images.views import (
     AlbumView,
     LibraryView,
     AddPhotoView,
-    AddAlbumView
+    AddAlbumView,
+    EditPhotoView,
+    EditAlbumView
 )
 
 urlpatterns = [
     url(r'^photos/$', AllPhotosView.as_view(), name="photos"),
     url(r'^photos/(?P<pk>\d+)/$', PhotoView.as_view(), name="photo"),
+    url(r'^photos/(?P<pk>\d+)/edit/$', EditPhotoView.as_view(), name="edit_photo"),
     url(r'^albums/$', AllAlbumsView.as_view(), name="albums"),
     url(r'^albums/(?P<pk>\d+)/$', AlbumView.as_view(), name="album"),
+    url(r'^albums/(?P<pk>\d+)/edit/$', EditAlbumView.as_view(), name="edit_album"),
     url(r'^library/$', LibraryView.as_view(), name="library"),
     url(r'^photos/add/$', AddPhotoView.as_view(), name="add_photo"),
     url(r'^albums/add/$', AddAlbumView.as_view(), name="add_album")

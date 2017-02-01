@@ -7,6 +7,7 @@ from imager_profile.forms import EditProfileForm
 from imager_profile.models import ImagerProfile
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class HomeView(TemplateView):
@@ -43,25 +44,29 @@ class ProfileView(TemplateView):
         return {'user_profile': user_profile, 'data': data}
 
 
-class EditProfileView(UpdateView):
-    """Update profile."""
+class EditProfileView(LoginRequiredMixin, UpdateView):
+    """Edit the authenticated users profile."""
 
     login_required = True
-    template_name = '../templates/eidt_profile_form.html'
+    template_name = 'imager_profile/edit_profile_form.html'
     success_url = reverse_lazy('profile')
     form_class = EditProfileForm
     model = ImagerProfile
 
     def get_object(self):
-        """Define what profile to edit."""
+        """Get the user profile object."""
         return self.request.user.profile
 
     def form_valid(self, form):
-        """If form post is successful, set the object's owner."""
+        """Save model forms to database."""
         self.object = form.save()
-        self.object.user.first_name = form.cleaned_data['First Name']
-        self.object.user.last_name = form.cleaned_data['Last Name']
-        self.object.user.email = form.cleaned_data['Email']
+        self.object.user.profile.hireable = form.clean_data['hireable']
+        self.object.user.profile.camera_type = form.clean_data['camera_type']
+        self.object.user.profile.personal_website = form.clean_data['personal_website']
+        self.object.user.profile.bio = form.clean_data['bio']
+        self.object.user.profile.traversal_radius = form.clean_data['traversal_radius']
+        self.object.user.profile.phone = form.clean_data['phone']
+        self.object.user.profile.photo_type = form.clean_data['photo_type']
         self.object.user.save()
         self.object.save()
-        return HttpResponseRedirect(self.get_success_url())
+        return redirect('profile')

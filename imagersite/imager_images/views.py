@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from imager_images.models import Photo, Album
-from imager_images.forms import AddPhotoForm, AddAlbumForm
-from django.views.generic import TemplateView, CreateView, ListView
-
+from imager_images.forms import AddPhotoForm, AddAlbumForm, EditPhotoForm, EditAlbumForm
+from django.views.generic import TemplateView, CreateView, ListView, UpdateView
+from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.utils import timezone
 
@@ -55,7 +56,6 @@ class AllAlbumsView(ListView):
 
     def get_queryset(self):
         """Return list of all albums for this user."""
-        # import pdb; pdb.set_trace()
         return Album.objects.filter(owner=self.request.user.profile)
 
 
@@ -106,3 +106,57 @@ class AddAlbumView(CreateView):
             album.published_date = timezone.now()
         album.save()
         return redirect('library')
+
+
+
+class EditPhotoView(LoginRequiredMixin, UpdateView):
+    """Edit a photo."""
+
+    login_required = True
+    template_name = 'imager_images/edit_photo_form.html'
+    success_url = reverse_lazy('library')
+    form_class = EditPhotoForm
+    model = Photo
+
+    def direct(self, request, *args, **kwargs):
+        """Forbid users who do not own the photo."""
+        if not self.check_user(request):
+            return HttpResponseForbidden()
+        return super(EditPhotoView, self).direct(request, *args, **kwargs)
+
+    def check_user(self, request):
+        """User is the owner of picture.."""
+        if request.user.is_authenticated():
+            self.object = self.get_object()
+            return self.object.photographer.user == request.user
+        return False
+
+
+
+class EditAlbumView(LoginRequiredMixin, UpdateView):
+    """Edit an album."""
+
+    login_required = True
+    template_name = 'imager_images/edit_album_form.html'
+    success_url = reverse_lazy('library')
+    form_class = EditAlbumForm
+    model = Album
+
+    def get_form(self):
+        """Get form for album."""
+        form = super(EditAlbumView, self).get_form()
+        form.fields['cover_photo'].queryset = self.request.user.profile.photos.all()
+        return form
+        
+    def direct(self, request, *args, **kwargs):
+        """Forbid users who do not own the album."""
+        if not self.check_user(request):
+            return HttpResponseForbidden()
+        return super(EditAlbumView, self).direct(request, *args, **kwargs)
+
+    def check_user(self, request):
+        """User is owner of album."""
+        if request.user.is_authenticated():
+            self.object = self.get_object()
+            return self.object.owner.user == request.user
+        return False

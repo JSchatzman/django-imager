@@ -15,7 +15,7 @@ PUBLISH_TYPE = (
 class Photo(models.Model):
     """Model for photo."""
 
-    photo = models.ImageField(upload_to='', blank=True, null=True)
+    photo = models.ImageField(upload_to=' ', blank=True, null=True)
     title = models.CharField(max_length=255, blank=True, null=True)
     description = models.CharField(max_length=255, blank=True, null=True)
     date_published = models.DateField(blank=True, null=True)

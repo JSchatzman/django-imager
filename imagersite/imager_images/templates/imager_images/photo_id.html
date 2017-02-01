@@ -14,6 +14,7 @@
     Upload Date: {{ photo.date_uploaded }}
     <br>
     Photographer: {{ photo.photographer.user.username }}
+    <a href="{% url 'edit_photo' pk=photo.pk %}"><button>Edit Photo</button></a>
     {% endif %}
 </ul>
 {% endblock %}
