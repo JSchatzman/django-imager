@@ -169,3 +169,19 @@ class ProfileFrontEndTests(TestCase):
         response = self.client.get("/profile/testuser/")
         self.assertTemplateUsed(response, "layout.html")
 
+
+class EditProfileTest(TestCase):
+    """Test edit profile."""
+
+    def setUp(self):
+        self.client = Client()
+        self.request = RequestFactory()
+
+    def test_view_status(self):
+        """Test 200 code."""
+        from imager_profile.views import EditProfileView
+        self.add_testuser()
+        req = self.client.get("/profile/testuser/edit")
+        view = EditProfileView.as_view()
+        response = view(req)
+        self.assertTrue(response.status_code == 200)
