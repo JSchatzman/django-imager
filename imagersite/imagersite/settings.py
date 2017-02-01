@@ -128,7 +128,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
 STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static', 'imagersite')]
+
 
 # Regsitration Stuff
 ACCOUNT_ACTIVATION_DAYS = 7
@@ -141,11 +149,11 @@ EMAIL_PORT = 587
 
 EMAIL_USE_TLS = True
 
-EMAIL_HOST = 'jordanjoey156@gmail.com'
+EMAIL_HOST_USER = 'jordanjoey156@gmail.com'
 
-EMAIL_HOST_PASS_WORD = os.environ.get("EMAIL_PASSWORD", "")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASSWORD", "")
 
 LOGIN_REDIRECT_URL = '/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'MEDIA')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
