@@ -25,7 +25,8 @@ SECRET_KEY = 'in2&a6jx+sx(=jt@t&x&joilm5_ewjxox-&o5x&^p-jjh&@m5z'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '[]').split(' ')
 
 
 # Application definition
@@ -132,7 +133,17 @@ STATIC_URL = '/static/'
 # Regsitration Stuff
 ACCOUNT_ACTIVATION_DAYS = 7
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = 'smtp.gmail.com'
+
+EMAIL_PORT = 587
+
+EMAIL_USE_TLS = True
+
+EMAIL_HOST = 'jordanjoey156@gmail.com'
+
+EMAIL_HOST_PASS_WORD = os.environ.get("EMAIL_PASSWORD", "")
 
 LOGIN_REDIRECT_URL = '/'
 
