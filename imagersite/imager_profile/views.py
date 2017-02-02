@@ -6,6 +6,7 @@ from django.views.generic import TemplateView, UpdateView
 from imager_profile.forms import EditProfileForm
 from imager_profile.models import ImagerProfile
 from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.signals import pre_save
@@ -61,12 +62,12 @@ class EditProfileView(LoginRequiredMixin, UpdateView):
         """Save model forms to database."""
         self.object = form.save()
         self.object.user.first_name = form.cleaned_data['name']
-        self.object.user.profile.camera_type = form['camera_type']
-        self.object.user.profile.personal_website = form['personal_website']
-        self.object.user.profile.bio = form['bio']
-        self.object.user.profile.traversal_radius = form['travel_radius']
-        self.object.user.profile.phone = form['phone']
-        self.object.user.profile.photo_type = form['photo_type']
+        self.object.user.profile.camera_type = form['camera_type'].value()
+        self.object.user.profile.personal_website = form['personal_website'].value()
+        self.object.user.profile.bio = form['bio'].value()
+        self.object.user.profile.traversal_radius = form['travel_radius'].value()
+        self.object.user.profile.phone = form['phone'].value()
+        self.object.user.profile.photo_type = form['photo_type'].value()
         self.object.user.save()
         self.object.save()
-        return HttpResponseRedirect('profile')
+        return redirect('my_profile')

@@ -24,13 +24,13 @@ class ImagerProfile(models.Model):
     objects = models.Manager()
     active = ActiveUsersManager()
     hireable = models.BooleanField(default=True)
-    address = models.CharField(max_length=50, blank=True, null=True)
-    camera_type = models.CharField(max_length=50, blank=True, null=True)
-    personal_website = models.URLField(max_length=50)
-    bio = models.TextField()
+    address = models.CharField(max_length=255, blank=True, null=True)
+    camera_type = models.CharField(max_length=255, blank=True, null=True)
+    personal_website = models.URLField(max_length=200)
+    bio = models.CharField(max_length=500)
     travel_radius = models.DecimalField(max_digits=8, decimal_places=3, null=True)
     phone = models.CharField(max_length=50, blank=True, null=True)
-    photo_type = models.CharField(max_length=50, blank=True, null=True)
+    photo_type = models.CharField(max_length=51, blank=True, null=True)
 
     def display_properties(self):
         """Print the properties of this profile."""

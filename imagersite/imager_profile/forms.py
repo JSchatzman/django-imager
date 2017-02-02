@@ -12,7 +12,7 @@ class EditProfileForm(forms.ModelForm):
         self.fields["camera_type"] = forms.CharField(initial=self.instance.user.profile.camera_type)
         self.fields["personal_website"] = forms.URLField(initial=self.instance.user.profile.personal_website)
         self.fields["bio"] = forms.CharField(initial=self.instance.user.profile.bio)
-        self.fields["travel_radius"] = forms.DecimalField(initial=self.instance.user.profile.travel_radius)
+        self.fields["travel_radius"] = forms.CharField(initial=self.instance.user.profile.travel_radius)
         self.fields["phone"] = forms.CharField(initial=self.instance.user.profile.phone)
         self.fields["photo_type"] = forms.CharField(initial=self.instance.user.profile.photo_type)
         del self.fields["user"]
