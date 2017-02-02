@@ -8,6 +8,7 @@ from imager_profile.models import ImagerProfile
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models.signals import pre_save
 
 
 class HomeView(TemplateView):
@@ -49,7 +50,6 @@ class EditProfileView(LoginRequiredMixin, UpdateView):
 
     login_required = True
     template_name = 'imager_profile/edit_profile_form.html'
-    success_url = reverse_lazy('profile')
     form_class = EditProfileForm
     model = ImagerProfile
 
@@ -60,13 +60,13 @@ class EditProfileView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         """Save model forms to database."""
         self.object = form.save()
-        self.object.user.profile.hireable = form.clean_data['hireable']
-        self.object.user.profile.camera_type = form.clean_data['camera_type']
-        self.object.user.profile.personal_website = form.clean_data['personal_website']
-        self.object.user.profile.bio = form.clean_data['bio']
-        self.object.user.profile.traversal_radius = form.clean_data['traversal_radius']
-        self.object.user.profile.phone = form.clean_data['phone']
-        self.object.user.profile.photo_type = form.clean_data['photo_type']
+        self.object.user.first_name = form.cleaned_data['name']
+        self.object.user.profile.camera_type = form['camera_type']
+        self.object.user.profile.personal_website = form['personal_website']
+        self.object.user.profile.bio = form['bio']
+        self.object.user.profile.traversal_radius = form['travel_radius']
+        self.object.user.profile.phone = form['phone']
+        self.object.user.profile.photo_type = form['photo_type']
         self.object.user.save()
         self.object.save()
-        return redirect('profile')
+        return HttpResponseRedirect('profile')

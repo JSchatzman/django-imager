@@ -13,11 +13,11 @@
 <h1> Hello {{ user_profile.user.username }} </h1>
 <br>
 <p><b>Username:</b> {{ user_profile.user.username }}</p>
-<p><b>Name:</b> {{ user_profile.user.name }}</p>
+<p><b>Name:</b> {{ user_profile.user.first_name }}</p>
 <p><b>Address:</b> {{ user_profile.address}}</p>
 <p><b>Phone:</b> {{ user_profile.phone}}</p>
 <p><b>Bio:</b> {{ user_profile.bio }}</p>
-<p><b>Camera:</b> {{ user_profile.camera }}</p>
+<p><b>Camera:</b> {{ user_profile.camera_type }}</p>
 <p><b>Photography Style:</b> {{ user_profile.photo_type }}</p>
 
 
@@ -31,9 +31,11 @@
 <p><b>Album Count:</b> {{ data.album_count }}</p>
 
 
+{% if user == user_profile.user %}
+<a href="{% url 'edit_profile' username=user.username %}">Edit Profile</a>
+
 <h1>Photos</h1>
 
-{% if user == user_profile.user %}
     <p><b>Private:</b> {{ data.photo_published }}<p>
     {% for pic in data.private_photos %}
         <img src="{{ pic.photo.url }}" style="max-width: 70%">
