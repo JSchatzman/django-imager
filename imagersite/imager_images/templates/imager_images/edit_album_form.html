@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<ul>
+    <h3>Edit Album</h3>
+
+    <form method="POST" class="edit-album-form" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Edit</button>
+</ul>
+{% endblock %}

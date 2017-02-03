@@ -1,0 +1,3 @@
+Thanks for registering! Here's your activation link:
+
+{{ site }}/registration/activate/{{ activation_key }}

@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<ul>
+    {% if error %}
+    <h3>{{ error }}</h3>
+    {% else %}
+    <li><img src="{{ photo.photo.url }}" style="max-width: 70%"></li>
+    <br>
+    Title: {{ photo.title }}
+    <br>
+    Description:  {{ photo.description }}
+    <br>
+    Upload Date: {{ photo.date_uploaded }}
+    <br>
+    Photographer: {{ photo.photographer.user.username }}
+    {% if user.username == photo.photographer.user.username%}
+    <a href="{% url 'edit_photo' pk=photo.pk %}"><button>Edit Photo</button></a>
+    {% endif %}
+    {% endif %}
+</ul>
+{% endblock %}

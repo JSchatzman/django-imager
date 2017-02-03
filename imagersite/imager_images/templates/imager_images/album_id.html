@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <section>
+        <ul>
+        {% for pic in photos %}
+            <li><img src="{{ pic.photo.url }}"></li>
+        {% endfor %}
+            <li><a href="{% url 'edit_album' pk=album.pk %}"><button>Edit Album</button></a></li>
+        </ul>
+    </section>
+{% endblock %}
