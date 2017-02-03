@@ -48,10 +48,27 @@ class ProfileTests(TestCase):
         query = User.objects.first()
         self.assertTrue(query.profile.bio == 'bio')
 
+    def test_change_username_changes_profile(self):
+        """Test that changing a attribute of a user works correctly."""
+        user = self.users[0]
+        profile = user.profile
+        user.profile.bio = 'bio'
+        user.profile.save()
+        self.assertEquals(user.profile.bio, profile.bio)
+
+    def test_change_profile_changes_user(self):
+        """Test that changing a attribute of a user works correctly."""
+        user = self.users[0]
+        user.username = 'newname'
+        profile = user.profile
+        user.profile.save()
+        self.assertEquals(user.username, profile.user.username)
+
 
 class ProfileFrontEndTests(TestCase):
 
     def setUp(self):
+        self.users = [UserFactory.create() for i in range(5)]
         self.client = Client()
         self.request = RequestFactory()
 
@@ -135,15 +152,15 @@ class ProfileFrontEndTests(TestCase):
 
     def test_can_register_new_user(self):
         """Post request properly filled out creates new user."""
-        self.assertTrue(User.objects.count() == 0)
+        user_count = User.objects.count()
         self.register_bob()
-        self.assertTrue(User.objects.count() == 1)
+        self.assertTrue(User.objects.count() == user_count + 1)
 
     def test_registered_user_is_inactive(self):
         """Test that a newly registered user is not yet activated."""
         self.register_bob()
-        the_user = User.objects.first()
-        self.assertFalse(the_user.is_active)
+        the_user = User.objects.filter(username='russellszn')
+        self.assertFalse(the_user[0].is_active)
 
     def test_successful_registration_redirects(self):
         """Test that registration redirects."""
@@ -160,7 +177,6 @@ class ProfileFrontEndTests(TestCase):
         """Test that accessing test profile returns correct html."""
         self.add_testuser()
         response = self.client.get('/profile/testuser/')
-        #import pdb; pdb.set_trace()
         self.assertContains(response, 'Album Count')
 
     def test_profile_route_uses_right_templates(self):
@@ -177,11 +193,27 @@ class EditProfileTest(TestCase):
         self.client = Client()
         self.request = RequestFactory()
 
+    def add_testuser(self):
+        """Make testuser and return his profile."""
+        user = UserFactory.create()
+        user.username = 'testuser'
+        user.set_password('testuser')
+        user.is_active = True
+        user.save()
+        return user.profile
+
+    def register_bob(self, follow=False):
+        """Create a dummy user named russellszn."""
+        response = self.client.post("/registration/register/", {
+            "username": "russellszn",
+            "email": "go@hawks.com",
+            "password1": "testing123",
+            "password2": "testing123",
+        }, follow=follow)
+        return response
+
     def test_view_status(self):
-        """Test 200 code."""
-        from imager_profile.views import EditProfileView
+        """Test redirect if not logged in."""
         self.add_testuser()
-        req = self.client.get("/profile/testuser/edit")
-        view = EditProfileView.as_view()
-        response = view(req)
-        self.assertTrue(response.status_code == 200)
+        response = self.client.get("/profile/testuser/edit")
+        self.assertTrue(response.status_code == 301)
