@@ -1,11 +1,11 @@
 # django-imager
 
+
+[![Build Status](https://travis-ci.org/JSchatzman/django-imager.svg?branch=master)](https://travis-ci.org/JSchatzman/django-imager)
+
+
 ## Authors: 
-Joey DeRosa, Jordan Schatzman, Ben Shields
+Joey DeRosa, Jordan Schatzman
 
 ## Overview:
-A killer web app that will allow users to share images built off the django frame-work.
-
-## Branches:
-### models-1:
-Create users that build inhance the built in user system provided by django. Also create a profile that exists alongside the user. The model also support ImagerProfile.active and profile.is_active. 
+A killer web app built in django that allows users to create profiles.  From there, they can upload photos and create albums which can be shared publically or privately.  Users can also submit personal details which can be edited just like albums and photos.
