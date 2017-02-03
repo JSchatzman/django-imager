@@ -32,14 +32,15 @@
 
 
 {% if user == user_profile.user %}
-<a href="{% url 'edit_profile' username=user.username %}">Edit Profile</a>
+    <a href="{% url 'edit_profile' username=user.username %}">Edit Profile</a>
+{% endif %}
 
 <h1>Photos</h1>
-
+{% if user == user_profile.user %}
     <p><b>Private:</b> {{ data.photo_published }}<p>
     {% for pic in data.private_photos %}
         <img src="{{ pic.photo.url }}" style="max-width: 70%">
-        <li><a href="{% url 'photo' pk=photo.pk %}">{{ photo.title }}</a></li>
+        <li><a href="{% url 'photo' pk=pic.pk %}">{{ photo.title }}</a></li>
         <li>Description: {{ photo.description }}</li>
         <br>
     {% endfor %}
@@ -74,9 +75,9 @@
         <br>
     {% endfor %}
 
-
-<a href="{% url 'library' %}" class="btn btn-primary">Gallery</a>
-
+{% if user == user_profile.user %}
+    <a href="{% url 'library' %}" class="btn btn-primary">Gallery</a>
+{% endif %}
 
 
 

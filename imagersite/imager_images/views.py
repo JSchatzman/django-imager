@@ -69,7 +69,8 @@ class LibraryView(TemplateView):
         if self.request.user.is_authenticated():
             albums = self.request.user.profile.albums.all()
             photos = self.request.user.profile.photos.all()
-            return {'albums': albums, 'photos': photos}
+            user = self.request.user
+            return {'albums': albums, 'photos': photos, 'user': user}
 
 
 class AddPhotoView(CreateView):

@@ -3,6 +3,7 @@
 The Library
 {% endblock %}
 {% block body %}
+{% if user.username %}
 <br>
 <form action="{% url 'add_photo' %}">
     <input type="submit" value="Add Photo">
@@ -23,4 +24,7 @@ The Library
 <img src="{{ photo.photo.url }}" width=100px height=100px>
 <p>{{ photo.description }}</p>
 {% endfor %}
+{% else %}
+<h1>NO</h1>
+{% endif %}
 {% endblock %}
