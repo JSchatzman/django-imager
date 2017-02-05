@@ -3,6 +3,7 @@
 
 from django.db import models
 from imager_profile.models import ImagerProfile
+from taggit.managers import TaggableManager
 
 
 PUBLISH_TYPE = (
@@ -29,6 +30,7 @@ class Photo(models.Model):
                                      related_name='photos',
                                      blank=True,
                                      null=True)
+    tags = TaggableManager()
 
 
 class Album(models.Model):

@@ -16,8 +16,9 @@ class PhotoView(TemplateView):
     def get_context_data(self, pk):
         """Rewrite get_context_data to add our data."""
         photo = Photo.objects.get(pk=pk)
+        tags = [name['name'] for name in photo.tags.values()]
         if photo.published == 'PUBLIC' or photo.photographer.user == self.request.user:
-            return {'photo': photo}
+            return {'photo': photo, 'tags': tags}
         else:
             error = "You cannot view this photo because you are not logged in."
             return {"error": error}

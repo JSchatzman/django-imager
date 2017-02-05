@@ -74,6 +74,7 @@
         <li>Description: {{ album.description }}</li>
         <br>
     {% endfor %}
+    <br>
 
 {% if user == user_profile.user %}
     <a href="{% url 'library' %}" class="btn btn-primary">Gallery</a>
