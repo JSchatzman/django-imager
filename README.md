@@ -5,7 +5,7 @@
 
 
 ## Authors: 
-Joey DeRosa, Jordan Schatzman, Iamrobinhood12345
+Joey DeRosa, Jordan Schatzman
 
 ## Overview:
 A killer web app built in django that allows users to create profiles.  From there, they can upload photos and create albums which can be shared publically or privately.  Users can also submit personal details which can be edited just like albums and photos.
