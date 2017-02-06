@@ -8,14 +8,14 @@
     <li><img src="{{ photo.photo.url }}" style="max-width: 70%"></li>
     <br>
     {% for tag in tags %}
-    <a href="">{{ tag }}</a> |
+    <a href="{% url 'tagged_photo' tag={{ tag }} %}">{{ tag }}</a> |
     {% endfor %}
     <br>
     Title: {{ photo.title }}
     <br>
     Description:  {{ photo.description }}
     <br>
-    Upload Date: {{ photo.date_uploaded }}
+    Upload Date: {{ photo.date_uploaded }
     <br>
     Photographer: {{ photo.photographer.user.username }}
     <br>

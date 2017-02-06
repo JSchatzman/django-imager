@@ -162,3 +162,13 @@ class EditAlbumView(LoginRequiredMixin, UpdateView):
             self.object = self.get_object()
             return self.object.owner.user == request.user
         return False
+
+
+class TaggedPhotosView(ListView):
+    """Photoes of the same tagg."""
+
+    template_name = 'imager_images/tagged_photos.html'
+
+    def get_queryset(self, tag):
+        """Get images with the same tag."""
+        return Photo.objects.filter(tag in Photo.objects.tags.values())
