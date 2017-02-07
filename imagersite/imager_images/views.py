@@ -169,6 +169,8 @@ class TaggedPhotosView(ListView):
 
     template_name = 'imager_images/tagged_photos.html'
 
-    def get_queryset(self, tag):
+    def get_context_data(self, the_tag):
         """Get images with the same tag."""
-        return Photo.objects.filter(tag in Photo.objects.tags.values())
+        photos = Photo.objects.filter(the_tag in Photo.objects.tags.values())
+        tags = [name['name'] for name in photo.tags.values()]
+        return {'photos': photos, 'tags': tags}

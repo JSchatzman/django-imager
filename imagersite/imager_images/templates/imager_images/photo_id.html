@@ -8,7 +8,7 @@
     <li><img src="{{ photo.photo.url }}" style="max-width: 70%"></li>
     <br>
     {% for tag in tags %}
-    <a href="{% url 'tagged_photo' tag={{ tag }} %}">{{ tag }}</a> |
+    <a href="{% url 'tagged_photos' the_tag=tag %}">{{ tag }}</a> |
     {% endfor %}
     <br>
     Title: {{ photo.title }}
