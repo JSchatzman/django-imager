@@ -16,8 +16,9 @@ class PhotoView(TemplateView):
     def get_context_data(self, pk):
         """Rewrite get_context_data to add our data."""
         photo = Photo.objects.get(pk=pk)
+        tags = [name['name'] for name in photo.tags.values()]
         if photo.published == 'PUBLIC' or photo.photographer.user == self.request.user:
-            return {'photo': photo}
+            return {'photo': photo, 'tags': tags}
         else:
             error = "You cannot view this photo because you are not logged in."
             return {"error": error}
@@ -161,3 +162,15 @@ class EditAlbumView(LoginRequiredMixin, UpdateView):
             self.object = self.get_object()
             return self.object.owner.user == request.user
         return False
+
+
+class TaggedPhotosView(ListView):
+    """Photoes of the same tagg."""
+
+    template_name = 'imager_images/tagged_photos.html'
+
+    def get_context_data(self, the_tag):
+        """Get images with the same tag."""
+        photos = Photo.objects.filter(the_tag in Photo.objects.tags.values())
+        tags = [name['name'] for name in photo.tags.values()]
+        return {'photos': photos, 'tags': tags}
