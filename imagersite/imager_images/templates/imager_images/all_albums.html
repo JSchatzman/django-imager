@@ -1,6 +1,9 @@
 {% extends "layout.html" %}
 
 {% block body %}
+{% for page_num in paginator.page_range %}
+    <a href="?page={{ page_num }}">Page {{ page_num }} | </a>
+{% endfor %}
 <ul>
     {% for album in albums %}
     <img src="{{ album.cover_photo.url }}" style="max-width: 70%">

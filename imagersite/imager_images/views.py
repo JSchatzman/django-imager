@@ -6,6 +6,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.utils import timezone
+from django.core.paginator import Paginator, EmptyPage
 
 
 class PhotoView(TemplateView):
@@ -16,9 +17,8 @@ class PhotoView(TemplateView):
     def get_context_data(self, pk):
         """Rewrite get_context_data to add our data."""
         photo = Photo.objects.get(pk=pk)
-        tags = [name['name'] for name in photo.tags.values()]
         if photo.published == 'PUBLIC' or photo.photographer.user == self.request.user:
-            return {'photo': photo, 'tags': tags}
+            return {'photo': photo}
         else:
             error = "You cannot view this photo because you are not logged in."
             return {"error": error}
@@ -28,6 +28,7 @@ class AlbumView(TemplateView):
     """View a album."""
 
     template_name = 'imager_images/album_id.html'
+    paginate_by = 4
 
     def get_context_data(self, pk):
         """Get context for album view."""
@@ -42,6 +43,7 @@ class AllPhotosView(ListView):
     template_name = 'imager_images/all_photos.html'
     model = Photo
     context_object_name = "photos"
+    paginate_by = 4
 
     def get_queryset(self):
         """Return list of all photos for this user."""
@@ -54,6 +56,7 @@ class AllAlbumsView(ListView):
     template_name = 'imager_images/all_albums.html'
     model = Album
     context_object_name = "albums"
+    paginate_by = 4
 
     def get_queryset(self):
         """Return list of all albums for this user."""
@@ -68,9 +71,25 @@ class LibraryView(TemplateView):
     def get_context_data(self):
         """Get context for library view."""
         if self.request.user.is_authenticated():
-            albums = self.request.user.profile.albums.all()
-            photos = self.request.user.profile.photos.all()
+            all_albums = self.request.user.profile.albums.all()
+            all_photos = self.request.user.profile.photos.all()
             user = self.request.user
+
+            this_page = self.request.GET.get('page', 1)
+
+            album_pages = Paginator(all_albums, 2)
+            photo_pages = Paginator(all_photos, 2)
+
+            try:
+                albums = album_pages.page(this_page)
+            except EmptyPage:
+                albums = album_pages.page(albums.paginator.page_range)
+
+            try:
+                photos = photo_pages.page(this_page)
+            except EmptyPage:
+                photos = photo_pages.page(photos.paginator.page_range)
+
             return {'albums': albums, 'photos': photos, 'user': user}
 
 
@@ -164,13 +183,14 @@ class EditAlbumView(LoginRequiredMixin, UpdateView):
         return False
 
 
-class TaggedPhotosView(ListView):
+class TaggedPhotosView(TemplateView):
     """Photoes of the same tagg."""
 
     template_name = 'imager_images/tagged_photos.html'
+    paginate_by = 4
 
     def get_context_data(self, the_tag):
         """Get images with the same tag."""
         photos = Photo.objects.filter(the_tag in Photo.objects.tags.values())
-        tags = [name['name'] for name in photo.tags.values()]
+        tags = [tag for tag in photo.tags.values()]
         return {'photos': photos, 'tags': tags}
