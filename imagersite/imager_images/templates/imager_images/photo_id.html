@@ -7,13 +7,18 @@
     {% else %}
     <li><img src="{{ photo.photo.url }}" style="max-width: 70%"></li>
     <br>
+    {% for tag in photo.tags.all %}
+    <a href="{% url 'tagged_photos' the_tag=tag.name %}">{{ tag.name }}</a> |
+    {% endfor %}
+    <br>
     Title: {{ photo.title }}
     <br>
     Description:  {{ photo.description }}
     <br>
-    Upload Date: {{ photo.date_uploaded }}
+    Upload Date: {{ photo.date_uploaded }
     <br>
     Photographer: {{ photo.photographer.user.username }}
+    <br>
     {% if user.username == photo.photographer.user.username%}
     <a href="{% url 'edit_photo' pk=photo.pk %}"><button>Edit Photo</button></a>
     {% endif %}

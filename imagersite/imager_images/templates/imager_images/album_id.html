@@ -2,6 +2,9 @@
 
 {% block body %}
     <section>
+    {% for page_num in paginator.page_range %}
+    <a href="?page={{ page_num }}">Page {{ page_num }} | </a>
+    {% endfor %}
         <ul>
         {% for pic in photos %}
             <li><img src="{{ pic.photo.url }}"></li>
