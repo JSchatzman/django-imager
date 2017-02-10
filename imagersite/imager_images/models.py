@@ -14,7 +14,6 @@ PUBLISH_TYPE = (
 
 class Photo(models.Model):
     """Model for photo."""
-
     photo = models.ImageField(upload_to=' ', blank=True, null=True)
     title = models.CharField(max_length=255, blank=True, null=True)
     description = models.CharField(max_length=255, blank=True, null=True)
@@ -29,7 +28,9 @@ class Photo(models.Model):
                                      related_name='photos',
                                      blank=True,
                                      null=True)
-
+    def __str__(self):
+        """Make string representation of this photo."""
+        return self.title
 
 class Album(models.Model):
     """Model for album."""
@@ -53,3 +54,7 @@ class Album(models.Model):
                                  blank=True,
                                  null=True)
     cover_photo = models.ImageField(upload_to='', blank=True, null=True)
+
+    def __str__(self):
+        """Make string representation of this album."""
+        return self.title
