@@ -32,6 +32,7 @@ class AlbumView(TemplateView):
         """Get context for album view."""
         album = Album.objects.get(pk=pk)
         photos = album.photos.all()
+      #  import pdb; pdb.set_trace()
         return {"album": album, "photos": photos}
 
 
@@ -95,8 +96,16 @@ class AddAlbumView(CreateView):
     """Class based view for creating photos."""
 
     model = Album
+    login_required = True
     form_class = AddAlbumForm
     template_name = 'imager_images/add_album.html'
+
+    def get_form(self):
+        """Make some alterations to default get_form method."""
+        form = super(AddAlbumView, self).get_form()
+        form.fields['cover_photo'].queryset = self.request.user.profile.photos.all()
+        form.fields['photos'].queryset = self.request.user.profile.photos.all()
+        return form
 
     def form_valid(self, form):
         album = form.save()
@@ -144,9 +153,10 @@ class EditAlbumView(LoginRequiredMixin, UpdateView):
     model = Album
 
     def get_form(self):
-        """Get form for album."""
+        """Make some alterations to default get_form method."""
         form = super(EditAlbumView, self).get_form()
         form.fields['cover_photo'].queryset = self.request.user.profile.photos.all()
+        form.fields['photos'].queryset = self.request.user.profile.photos.all()
         return form
         
     def direct(self, request, *args, **kwargs):

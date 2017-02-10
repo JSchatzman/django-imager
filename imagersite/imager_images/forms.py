@@ -15,7 +15,7 @@ class AddAlbumForm(forms.ModelForm):
 
     class Meta:
         model = Album
-        exclude = ['owner', 'date_modified', 'date_published', 'date_created', 'photos']
+        exclude = ['owner', 'date_modified', 'date_published', 'date_created']
 
 
 class EditAlbumForm(forms.ModelForm):
@@ -31,7 +31,7 @@ class EditAlbumForm(forms.ModelForm):
             'date_modified',
             'date_published',
         ]
-        fields = ['cover_photo', 'title', 'description']
+        fields = ['cover_photo', 'title', 'description', 'photos']
         title = forms.CharField(label='title', max_length=50)
         description = forms.CharField(label='description', max_length=200)
 
