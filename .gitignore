@@ -19,10 +19,12 @@ lib/
 lib64/
 parts/
 sdist/
+django-imager-venv/
 var/
 *.egg-info/
 .installed.cfg
 *.egg
+/imagersite/MEDIA/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template

@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<ul>
+    {% for photo in photos %}
+    <img src="{{ photo.photo.url }}" style="max-width: 70%">
+    <li>Title: <a href="{% url 'photo' pk=photo.pk %}">{{ photo.title }}</a></li>
+    <li>Description: {{ photo.description }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}
