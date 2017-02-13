@@ -1,8 +1,8 @@
+import factory
 from django.test import TestCase
 from django.contrib.auth.models import User
 from imager_profile.models import ImagerProfile
 from imager_images.models import Photo, Album
-import factory
 from django.test import Client, RequestFactory
 from django.urls import reverse_lazy
 

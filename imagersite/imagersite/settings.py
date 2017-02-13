@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'imager_profile',
     'imagersite',
-    'imager_images'
+    'imager_images',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
