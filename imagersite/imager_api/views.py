@@ -8,13 +8,6 @@ from imager_api.permissions import IsOwnerOrReadOnly
 from rest_framework import permissions
 
 
-class PhotoAPIDetail(generics.GenericAPIView):
-    """Implementation of photo detail api."""
-
-    queryset = Photo.objects.all()
-    serializer_class = PhotoSerializer
-
-
 class PhotoAPIList(mixins.ListModelMixin,
                    generics.GenericAPIView):
     """Implementation of photo list api."""
